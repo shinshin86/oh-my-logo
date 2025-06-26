@@ -1,0 +1,67 @@
+{
+  "name": "oh-my-logo",
+  "version": "0.1.0",
+  "description": "Display giant ASCII art logos with colorful gradients in your terminal",
+  "type": "module",
+  "main": "./dist/lib.js",
+  "types": "./dist/lib.d.ts",
+  "bin": {
+    "oh-my-logo": "./dist/index.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/lib.d.ts",
+      "import": "./dist/lib.js"
+    },
+    "./cli": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc --project tsconfig.json",
+    "start": "ts-node --esm src/index.ts",
+    "dev": "tsx src/index.ts",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "cli",
+    "ascii",
+    "art",
+    "logo",
+    "gradient",
+    "terminal",
+    "figlet"
+  ],
+  "author": "shinshin86 <shinshin86npm@gmail.com> (https://github.com/shinshin86)",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "commander": "^11.1.0",
+    "figlet": "^1.7.0",
+    "gradient-string": "^2.0.2",
+    "ink": "^5.0.1",
+    "ink-big-text": "^2.0.0",
+    "ink-gradient": "^3.0.0",
+    "react": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/figlet": "^1.5.8",
+    "@types/gradient-string": "^1.1.5",
+    "@types/node": "^20.19.1",
+    "@types/react": "^18.3.3",
+    "@vitest/coverage-v8": "^3.2.4",
+    "@vitest/ui": "^3.2.4",
+    "tsx": "^4.6.2",
+    "typescript": "^5.3.3",
+    "vitest": "^3.2.4"
+  }
+}
