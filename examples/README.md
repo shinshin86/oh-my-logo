@@ -45,6 +45,10 @@ deno run --allow-env --allow-read --allow-write examples/filled.ts
 
 # Error handling examples
 deno run --allow-env --allow-read examples/error-handling.ts
+
+# Rainbow animation with cycling colors/fonts and progressive text display
+# Use $'...' syntax to interpret escape sequences like \n
+deno run --allow-env --allow-read examples/rainbow.ts $'YOUR\nTEXT'
 ```
 
 **Note**: The `--allow-env` and `--allow-read` flags are required because oh-my-logo accesses environment variables and reads font files.
@@ -72,6 +76,13 @@ deno run --allow-env --allow-read examples/error-handling.ts
 - Handling invalid palette names
 - Proper error catching and reporting
 - Best practices for library usage
+
+### rainbow.ts
+- Animated logo with cycling color palettes
+- Progressive text display (character-by-character)
+- Rotating through different fonts
+- Graceful exit handling (Ctrl+C)
+- Example of real-time rendering loop
 
 ## Library Import Pattern
 
