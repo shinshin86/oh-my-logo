@@ -311,7 +311,7 @@ Contributions are welcome! Please feel free to submit a Pull Request. Whether it
 
 ## 📄 License
 
-MIT © [Your Name]
+MIT
 
 ---
 
