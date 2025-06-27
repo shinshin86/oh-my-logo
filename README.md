@@ -4,6 +4,12 @@
 
 Create stunning ASCII art logos with beautiful gradient colors in your terminal! Perfect for project banners, startup logos, or just making your terminal look awesome.
 
+You can also create stunning animations like these by using it as a library in your programs!
+
+![GIF Demo](./images/demo.gif)
+
+![GIF Demo 2](./images/demo2.gif)
+
 ## ✨ Features
 
 - 🎨 **Two Rendering Modes**: Choose between outlined ASCII art or filled block characters
