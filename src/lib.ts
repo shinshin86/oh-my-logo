@@ -8,6 +8,7 @@ import {
   getDefaultPalette,
   getPalettePreview 
 } from './palettes.js';
+import { cacheManager } from './cache/CacheManager.js';
 import type { Fonts } from 'figlet';
 
 export const DEFAULT_PALETTE: PaletteName = 'grad-blue';
@@ -24,33 +25,14 @@ export interface RenderInkOptions {
   palette?: PaletteName | string[] | string;
 }
 
-// Cache for resolved colors to avoid repeated palette lookups
-const colorCache = new Map<string, string[]>();
-
 export function resolveColors(palette: PaletteName | string[] | string): string[] {
   if (Array.isArray(palette)) {
     return palette;
   }
   
-  // Check cache first
-  if (colorCache.has(palette)) {
-    return colorCache.get(palette)!;
-  }
-  
   const colors = resolvePalette(palette);
   if (!colors) {
     throw new Error(`Unknown palette: ${palette}`);
-  }
-  
-  // Cache the result
-  colorCache.set(palette, colors);
-  
-  // Limit cache size
-  if (colorCache.size > 50) {
-    const firstKey = colorCache.keys().next().value;
-    if (firstKey !== undefined) {
-      colorCache.delete(firstKey);
-    }
   }
   
   return colors;
@@ -75,21 +57,68 @@ export async function renderFilled(text: string, options: RenderInkOptions = {})
   return renderInkLogo(text, paletteColors);
 }
 
-// Performance utilities
+// Performance utilities with enhanced caching
 export function clearAllCaches(): void {
-  clearRenderCache();
-  clearInkCache();
-  colorCache.clear();
+  cacheManager.clearAll();
 }
 
-export function getPerformanceStats(): {
-  colorCacheSize: number;
-  renderCacheStats?: any;
-} {
+export function getPerformanceStats() {
+  const stats = cacheManager.getStats();
+  const hotKeys = cacheManager.getHotKeys();
+  
   return {
-    colorCacheSize: colorCache.size,
-    // Add render cache stats if needed for debugging
+    cacheStats: stats,
+    hotKeys,
+    memoryUsageMB: stats.totalMemoryUsage / (1024 * 1024),
+    totalHitRate: stats.totalHitRate,
+    recommendations: generatePerformanceRecommendations(stats)
   };
+}
+
+function generatePerformanceRecommendations(stats: any): string[] {
+  const recommendations: string[] = [];
+  
+  if (stats.totalHitRate < 0.7) {
+    recommendations.push('Consider preloading common patterns to improve cache hit rate');
+  }
+  
+  if (stats.totalMemoryUsage > 50 * 1024 * 1024) { // 50MB
+    recommendations.push('Memory usage is high, consider clearing unused caches');
+  }
+  
+  if (stats.figlet.size > 400) {
+    recommendations.push('Figlet cache is large, consider reducing cache size or clearing old entries');
+  }
+  
+  return recommendations;
+}
+
+// Preloading utilities for common patterns
+export async function preloadCommonPatterns(): Promise<void> {
+  const commonTexts = ['HELLO', 'WORLD', 'LOGO', 'DEMO', 'TEST', 'APP', 'API', 'WEB'];
+  const commonPalettes: PaletteName[] = ['grad-blue', 'sunset', 'ocean', 'fire', 'matrix'];
+  const commonFonts = ['Standard', 'Big'];
+  
+  console.log('Preloading common ASCII patterns...');
+  
+  const startTime = performance.now();
+  let preloadCount = 0;
+  
+  for (const text of commonTexts) {
+    for (const palette of commonPalettes) {
+      for (const font of commonFonts) {
+        try {
+          await render(text, { palette, font });
+          preloadCount++;
+        } catch (error) {
+          // Skip if font not available
+        }
+      }
+    }
+  }
+  
+  const endTime = performance.now();
+  console.log(`Preloaded ${preloadCount} patterns in ${(endTime - startTime).toFixed(2)}ms`);
 }
 
 export {
@@ -100,7 +129,8 @@ export {
   getDefaultPalette,
   getPalettePreview,
   clearRenderCache,
-  clearInkCache
+  clearInkCache,
+  cacheManager
 };
 
 export type { Fonts };

@@ -1,22 +1,19 @@
 import figlet from 'figlet';
 import gradient from 'gradient-string';
 import { FontError } from './utils/errors.js';
+import { cacheManager } from './cache/CacheManager.js';
 
-// Cache for figlet results to avoid re-computation
-const figletCache = new Map<string, string>();
-
-// Cache for gradient functions to avoid re-creation
-const gradientCache = new Map<string, any>();
-
-// Pre-compile commonly used fonts for faster access
-const FAST_FONTS = ['Standard', 'Big', 'Small'] as const;
-
-function getCacheKey(text: string, font: string): string {
+// Performance optimized cache keys
+function getFigletCacheKey(text: string, font: string): string {
   return `${text}:${font}`;
 }
 
 function getGradientCacheKey(palette: string[]): string {
   return palette.join(',');
+}
+
+function getDiagonalCacheKey(palette: string[], shift: number): string {
+  return `${palette.join(',')}:${shift.toFixed(2)}`;
 }
 
 export function renderLogo(
@@ -27,11 +24,11 @@ export function renderLogo(
 ): string {
   try {
     // Check figlet cache first
-    const cacheKey = getCacheKey(text, font);
-    let asciiArt = figletCache.get(cacheKey);
+    const figletKey = getFigletCacheKey(text, font);
+    let asciiArt = cacheManager.getFigletArt(figletKey);
     
     if (!asciiArt) {
-      // Use synchronous figlet for better performance
+      // Generate ASCII art
       asciiArt = figlet.textSync(text, {
         font: font as figlet.Fonts,
         horizontalLayout: 'default',
@@ -40,51 +37,32 @@ export function renderLogo(
         whitespaceBreak: true
       });
       
-      // Cache the result for future use
-      figletCache.set(cacheKey, asciiArt);
-      
-      // Limit cache size to prevent memory issues
-      if (figletCache.size > 100) {
-        const firstKey = figletCache.keys().next().value;
-        if (firstKey !== undefined) {
-          figletCache.delete(firstKey);
-        }
-      }
+      // Cache the result
+      cacheManager.setFigletArt(figletKey, asciiArt);
     }
     
     // Check gradient cache
-    const gradientCacheKey = getGradientCacheKey(palette);
-    let gradientFn = gradientCache.get(gradientCacheKey);
+    const gradientKey = getGradientCacheKey(palette);
+    let gradientFn = cacheManager.getGradient(gradientKey);
     
     if (!gradientFn) {
       gradientFn = gradient(palette);
-      gradientCache.set(gradientCacheKey, gradientFn);
-      
-      // Limit gradient cache size
-      if (gradientCache.size > 50) {
-        const firstKey = gradientCache.keys().next().value;
-        if (firstKey !== undefined) {
-          gradientCache.delete(firstKey);
-        }
-      }
+      cacheManager.setGradient(gradientKey, gradientFn);
     }
     
     let coloredArt: string;
     
     switch (direction) {
       case 'horizontal':
-        // Optimized horizontal gradient processing
         coloredArt = processHorizontalGradient(asciiArt, gradientFn);
         break;
         
       case 'diagonal':
-        // Optimized diagonal gradient processing
         coloredArt = processDiagonalGradient(asciiArt, palette);
         break;
         
       case 'vertical':
       default:
-        // Use multiline for vertical (most efficient for this case)
         coloredArt = gradientFn.multiline(asciiArt);
         break;
     }
@@ -101,75 +79,61 @@ export function renderLogo(
 // Optimized horizontal gradient processing
 function processHorizontalGradient(asciiArt: string, gradientFn: any): string {
   const lines = asciiArt.split('\n');
-  const coloredLines: string[] = [];
+  const coloredLines: string[] = new Array(lines.length);
   
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
-    if (line.trim() === '') {
-      coloredLines.push(line);
-    } else {
-      coloredLines.push(gradientFn(line));
-    }
+    coloredLines[i] = line.trim() === '' ? line : gradientFn(line);
   }
   
   return coloredLines.join('\n');
 }
 
-// Optimized diagonal gradient processing with caching
-const diagonalGradientCache = new Map<string, any>();
-
+// Optimized diagonal gradient processing with advanced caching
 function processDiagonalGradient(asciiArt: string, palette: string[]): string {
   const lines = asciiArt.split('\n');
   const lineCount = lines.length;
-  const coloredLines: string[] = [];
+  const coloredLines: string[] = new Array(lines.length);
   
   for (let index = 0; index < lines.length; index++) {
     const line = lines[index];
     if (line.trim() === '') {
-      coloredLines.push(line);
+      coloredLines[index] = line;
       continue;
     }
     
     // Create cache key for this line's gradient
     const shift = (index / lineCount) * palette.length;
-    const shiftKey = `${palette.join(',')}:${shift.toFixed(2)}`;
+    const diagonalKey = getDiagonalCacheKey(palette, shift);
     
-    let lineGradient = diagonalGradientCache.get(shiftKey);
+    let lineGradient = cacheManager.getGradient(diagonalKey);
     if (!lineGradient) {
       // Create a gradient that shifts based on line position
-      const shiftedPalette = palette.map((color, colorIndex) => {
+      const shiftedPalette = palette.map((_, colorIndex) => {
         return palette[Math.floor(colorIndex + shift) % palette.length];
       });
       lineGradient = gradient(shiftedPalette);
-      diagonalGradientCache.set(shiftKey, lineGradient);
-      
-      // Limit diagonal cache size
-      if (diagonalGradientCache.size > 100) {
-        const firstKey = diagonalGradientCache.keys().next().value;
-        if (firstKey !== undefined) {
-          diagonalGradientCache.delete(firstKey);
-        }
-      }
+      cacheManager.setGradient(diagonalKey, lineGradient);
     }
     
-    coloredLines.push(lineGradient(line));
+    coloredLines[index] = lineGradient(line);
   }
   
   return coloredLines.join('\n');
 }
 
-// Function to clear caches if needed (useful for memory management)
+// Export cache management functions
 export function clearRenderCache(): void {
-  figletCache.clear();
-  gradientCache.clear();
-  diagonalGradientCache.clear();
+  cacheManager.clearFigletCache();
+  cacheManager.clearGradientCache();
 }
 
-// Function to get cache statistics (useful for debugging)
-export function getCacheStats(): { figlet: number; gradient: number; diagonal: number } {
+export function getCacheStats() {
+  const stats = cacheManager.getStats();
   return {
-    figlet: figletCache.size,
-    gradient: gradientCache.size,
-    diagonal: diagonalGradientCache.size
+    figlet: stats.figlet.size,
+    gradient: stats.gradient.size,
+    hitRate: stats.totalHitRate,
+    memoryUsage: stats.totalMemoryUsage
   };
 }

@@ -1,3 +1,5 @@
+import { cacheManager } from './cache/CacheManager.js';
+
 export const PALETTES = {
   'grad-blue': ['#4ea8ff', '#7f88ff'],
   'sunset': ['#ff9966', '#ff5e62', '#ffa34e'],
@@ -16,13 +18,17 @@ export const PALETTES = {
 
 export type PaletteName = keyof typeof PALETTES;
 
-// Cache for palette resolution to avoid repeated array copying
-const paletteCache = new Map<string, string[]>();
+// Pre-computed palette names for faster access
+const PALETTE_NAMES = Object.keys(PALETTES);
+
+// Pre-computed default palette for faster access
+const DEFAULT_PALETTE_COLORS = [...PALETTES['grad-blue']];
 
 export function resolvePalette(name: string): string[] | null {
   // Check cache first
-  if (paletteCache.has(name)) {
-    return paletteCache.get(name)!;
+  const cached = cacheManager.getPalette(name);
+  if (cached) {
+    return cached;
   }
   
   const paletteName = name as PaletteName;
@@ -34,28 +40,14 @@ export function resolvePalette(name: string): string[] | null {
   
   // Create a copy and cache it
   const paletteArray = [...palette];
-  paletteCache.set(name, paletteArray);
-  
-  // Limit cache size
-  if (paletteCache.size > 20) {
-    const firstKey = paletteCache.keys().next().value;
-    if (firstKey !== undefined) {
-      paletteCache.delete(firstKey);
-    }
-  }
+  cacheManager.setPalette(name, paletteArray);
   
   return paletteArray;
 }
 
-// Pre-computed palette names for faster access
-const PALETTE_NAMES = Object.keys(PALETTES);
-
 export function getPaletteNames(): string[] {
   return PALETTE_NAMES;
 }
-
-// Pre-computed default palette for faster access
-const DEFAULT_PALETTE_COLORS = [...PALETTES['grad-blue']];
 
 export function getDefaultPalette(): string[] {
   return DEFAULT_PALETTE_COLORS;
@@ -79,8 +71,8 @@ export function getPalettePreview(name: PaletteName): string {
   return preview;
 }
 
-// Function to clear palette caches if needed
+// Function to clear palette caches
 export function clearPaletteCache(): void {
-  paletteCache.clear();
+  cacheManager.clearPaletteCache();
   previewCache.clear();
 }
