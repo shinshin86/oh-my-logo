@@ -1,4 +1,4 @@
-import { renderLogo } from './renderer.js';
+import { renderLogo, getCacheStats, clearCache, pruneCache } from './renderer.js';
 import { renderInkLogo } from './InkRenderer.js';
 import { 
   PALETTES, 
@@ -53,6 +53,9 @@ export async function renderFilled(text: string, options: RenderInkOptions = {})
   const paletteColors = resolveColors(palette);
   return renderInkLogo(text, paletteColors);
 }
+
+// Export cache management functions
+export { getCacheStats, clearCache, pruneCache };
 
 export {
   PALETTES,

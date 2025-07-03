@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { Command } from 'commander';
-import { render, renderFilled, getPaletteNames, getPalettePreview, PALETTES, DEFAULT_FONT, DEFAULT_PALETTE, resolveColors } from './lib.js';
+import { render, renderFilled, getPaletteNames, getPalettePreview, PALETTES, DEFAULT_FONT, DEFAULT_PALETTE, resolveColors, getCacheStats, clearCache } from './lib.js';
 import { shouldUseColor, stripAnsiCodes } from './utils/stdout.js';
 import { PaletteError, InputError } from './utils/errors.js';
 import { readFileSync } from 'fs';
@@ -26,6 +26,8 @@ program
   .option('--no-color', 'Disable color output')
   .option('-d, --direction <dir>', 'Gradient direction: horizontal, vertical, or diagonal', 'vertical')
   .option('--filled', 'Use filled characters instead of outlined ASCII art')
+  .option('--cache-stats', 'Show cache statistics')
+  .option('--clear-cache', 'Clear the ASCII art cache')
   .action(async (text: string, paletteArg: string, options) => {
     try {
       if (options.listPalettes) {
@@ -34,6 +36,23 @@ program
           const preview = getPalettePreview(name as keyof typeof PALETTES);
           console.log(`  - ${name.padEnd(12)} ${preview}`);
         });
+        process.exit(0);
+      }
+
+      if (options.cacheStats) {
+        const stats = getCacheStats();
+        console.log('ASCII Art Cache Statistics:');
+        console.log(`  Cache hits: ${stats.hits}`);
+        console.log(`  Cache misses: ${stats.misses}`);
+        console.log(`  Hit rate: ${stats.hitRate.toFixed(1)}%`);
+        console.log(`  Cache size: ${stats.size}/${stats.maxSize} entries`);
+        console.log(`  Memory usage: ~${Math.round(stats.size * 500 / 1024)}KB`);
+        process.exit(0);
+      }
+
+      if (options.clearCache) {
+        clearCache();
+        console.log('ASCII art cache cleared successfully.');
         process.exit(0);
       }
 

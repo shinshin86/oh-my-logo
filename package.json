@@ -51,6 +51,7 @@
     "ink": "^5.0.1",
     "ink-big-text": "^2.0.0",
     "ink-gradient": "^3.0.0",
+    "lru-cache": "^10.1.0",
     "react": "^18.3.1"
   },
   "devDependencies": {
