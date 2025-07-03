@@ -46,7 +46,9 @@ export function renderLogo(
       // Limit cache size to prevent memory issues
       if (figletCache.size > 100) {
         const firstKey = figletCache.keys().next().value;
-        figletCache.delete(firstKey);
+        if (firstKey !== undefined) {
+          figletCache.delete(firstKey);
+        }
       }
     }
     
@@ -61,7 +63,9 @@ export function renderLogo(
       // Limit gradient cache size
       if (gradientCache.size > 50) {
         const firstKey = gradientCache.keys().next().value;
-        gradientCache.delete(firstKey);
+        if (firstKey !== undefined) {
+          gradientCache.delete(firstKey);
+        }
       }
     }
     
@@ -142,7 +146,9 @@ function processDiagonalGradient(asciiArt: string, palette: string[]): string {
       // Limit diagonal cache size
       if (diagonalGradientCache.size > 100) {
         const firstKey = diagonalGradientCache.keys().next().value;
-        diagonalGradientCache.delete(firstKey);
+        if (firstKey !== undefined) {
+          diagonalGradientCache.delete(firstKey);
+        }
       }
     }
     

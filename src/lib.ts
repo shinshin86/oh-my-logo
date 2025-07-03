@@ -48,7 +48,9 @@ export function resolveColors(palette: PaletteName | string[] | string): string[
   // Limit cache size
   if (colorCache.size > 50) {
     const firstKey = colorCache.keys().next().value;
-    colorCache.delete(firstKey);
+    if (firstKey !== undefined) {
+      colorCache.delete(firstKey);
+    }
   }
   
   return colors;

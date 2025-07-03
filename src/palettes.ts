@@ -39,7 +39,9 @@ export function resolvePalette(name: string): string[] | null {
   // Limit cache size
   if (paletteCache.size > 20) {
     const firstKey = paletteCache.keys().next().value;
-    paletteCache.delete(firstKey);
+    if (firstKey !== undefined) {
+      paletteCache.delete(firstKey);
+    }
   }
   
   return paletteArray;
