@@ -2,7 +2,7 @@
  * Basic oh-my-logo Library Usage Examples
  * 
  * This file demonstrates the fundamental features of oh-my-logo as a library.
- * Run with: deno run examples/basic.ts
+ * Run with: node examples/basic.js (after compilation) or deno run examples/basic.ts
  */
 
 import { 
@@ -68,7 +68,7 @@ async function customTextExample() {
   console.log("✨ Example 4: Custom Text and Options\n");
   
   // Your custom text here
-  const customText = "DENO";
+  const customText = "NODE";
   
   console.log(`Rendering: "${customText}"`);
   console.log("Palette: matrix (classic green matrix colors)");
@@ -146,7 +146,14 @@ async function main() {
   }
 }
 
-// Run the examples
-if (import.meta.main) {
+// Check if this is the main module (works in both Node.js and Deno)
+const isMain = typeof require !== 'undefined' && require.main === module ||
+               typeof import.meta !== 'undefined' && import.meta.url === `file://${process.argv[1]}`;
+
+// Run the examples if this is the main module
+if (isMain) {
   main();
 }
+
+// Export for potential use as a module
+export { main };

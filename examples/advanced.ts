@@ -3,7 +3,7 @@
  * 
  * This file demonstrates advanced features like custom colors, gradient directions,
  * and different font options.
- * Run with: deno run examples/advanced.ts
+ * Run with: node examples/advanced.js (after compilation) or deno run examples/advanced.ts
  */
 
 import { render, type RenderOptions } from "../dist/lib.js";
@@ -92,7 +92,7 @@ async function fontExample() {
       console.log(logo);
     } catch (error) {
       console.log(`❌ Font "${font}" not available on this system`);
-      console.log(`Error: ${error.message}`);
+      console.log(`Error: ${(error as Error).message}`);
     }
     
     console.log();
@@ -250,7 +250,14 @@ async function main() {
   }
 }
 
+// Check if this is the main module (works in both Node.js and Deno)
+const isMain = typeof require !== 'undefined' && require.main === module ||
+               typeof import.meta !== 'undefined' && import.meta.url === `file://${process.argv[1]}`;
+
 // Run the advanced examples
-if (import.meta.main) {
+if (isMain) {
   main();
 }
+
+// Export for potential use as a module
+export { main };
