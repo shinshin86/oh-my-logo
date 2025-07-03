@@ -28,6 +28,7 @@ class CacheManager {
   private paletteCache: LRUCache<string[]>;
   private inkCache: LRUCache<Promise<void>>;
   private config: CacheConfig;
+  private memoryMonitorInterval: NodeJS.Timeout | null = null;
 
   constructor(config: Partial<CacheConfig> = {}) {
     this.config = {
@@ -44,8 +45,10 @@ class CacheManager {
     this.paletteCache = new LRUCache<string[]>(this.config.paletteCacheSize);
     this.inkCache = new LRUCache<Promise<void>>(this.config.inkCacheSize);
 
-    // Start memory monitoring
-    this.startMemoryMonitoring();
+    // Start memory monitoring only in long-running processes
+    if (process.env.NODE_ENV !== 'production' || process.argv.includes('--monitor-memory')) {
+      this.startMemoryMonitoring();
+    }
   }
 
   // Figlet cache methods
@@ -108,6 +111,15 @@ class CacheManager {
     this.inkCache.clear();
   }
 
+  // Cleanup method for graceful shutdown
+  cleanup(): void {
+    if (this.memoryMonitorInterval) {
+      clearInterval(this.memoryMonitorInterval);
+      this.memoryMonitorInterval = null;
+    }
+    this.clearAll();
+  }
+
   // Statistics and monitoring
   getStats(): GlobalCacheStats {
     const figletStats = this.figletCache.getStats();
@@ -145,7 +157,7 @@ class CacheManager {
   // Memory management
   private startMemoryMonitoring(): void {
     // Check memory usage every 30 seconds
-    setInterval(() => {
+    this.memoryMonitorInterval = setInterval(() => {
       this.checkMemoryUsage();
     }, 30000);
   }
@@ -199,6 +211,21 @@ class CacheManager {
 
 // Singleton instance
 export const cacheManager = new CacheManager();
+
+// Cleanup on process exit
+process.on('exit', () => {
+  cacheManager.cleanup();
+});
+
+process.on('SIGINT', () => {
+  cacheManager.cleanup();
+  process.exit(0);
+});
+
+process.on('SIGTERM', () => {
+  cacheManager.cleanup();
+  process.exit(0);
+});
 
 // Export for testing and advanced usage
 export { CacheManager };
