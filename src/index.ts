@@ -61,6 +61,11 @@ program
       if (options.filled) {
         // Use Ink for filled characters
         await renderFilled(inputText, { palette: paletteArg });
+        
+        // Force exit after Ink rendering completes
+        setTimeout(() => {
+          process.exit(0);
+        }, 100);
       } else {
         // Use figlet for outlined ASCII art
         const logo = await render(inputText, {
@@ -76,6 +81,9 @@ program
         
         const output = useColor ? logo : stripAnsiCodes(logo);
         console.log(output);
+        
+        // Exit immediately for regular ASCII art
+        process.exit(0);
       }
       
     } catch (error) {
@@ -87,5 +95,25 @@ program
       process.exit(1);
     }
   });
+
+// Handle process signals for clean exit
+process.on('SIGINT', () => {
+  process.exit(0);
+});
+
+process.on('SIGTERM', () => {
+  process.exit(0);
+});
+
+// Ensure process exits if it hangs
+const exitTimeout = setTimeout(() => {
+  console.error('Process timeout - forcing exit');
+  process.exit(1);
+}, 5000); // 5 second timeout
+
+// Clear timeout if process exits normally
+process.on('exit', () => {
+  clearTimeout(exitTimeout);
+});
 
 program.parse();

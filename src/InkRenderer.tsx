@@ -40,14 +40,23 @@ export function renderInkLogo(text: string, palette: string[]): Promise<void> {
     return cached;
   }
   
-  const renderPromise = new Promise<void>((resolve) => {
-    const { unmount } = render(<Logo text={text} colors={palette} />);
-    
-    // Optimized timeout for faster completion
-    setTimeout(() => {
-      unmount();
-      resolve();
-    }, 30); // Reduced from 50ms to 30ms for even faster rendering
+  const renderPromise = new Promise<void>((resolve, reject) => {
+    try {
+      const { unmount } = render(<Logo text={text} colors={palette} />);
+      
+      // Shorter timeout for faster completion and immediate unmount
+      setTimeout(() => {
+        try {
+          unmount();
+          resolve();
+        } catch (error) {
+          reject(error);
+        }
+      }, 50); // Increased slightly to ensure proper rendering
+      
+    } catch (error) {
+      reject(error);
+    }
   });
   
   // Cache the promise
