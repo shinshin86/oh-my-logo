@@ -295,6 +295,38 @@ npm run build
 node dist/index.js "HELLO" matrix --filled
 ```
 
+### 🧪 Testing
+
+Run the test suite with Vitest:
+
+```bash
+# Run all tests in watch mode
+npm run test
+
+# Run tests once (CI mode)
+npm run test:coverage
+
+# Run tests with UI
+npm run test:ui
+
+# Run specific test file
+npm test -- src/__tests__/cli.test.ts
+```
+
+The test suite includes:
+- Unit tests for all library functions
+- CLI integration tests
+- Color palette validation
+- Error handling scenarios
+- TTY/color detection logic
+
+Tests are located in `src/__tests__/` with the following structure:
+- `cli.test.ts` - CLI command line behavior
+- `lib.test.ts` - Library API functions
+- `palettes.test.ts` - Color palette system
+- `renderer.test.ts` - ASCII art rendering
+- `utils/` - Utility function tests
+
 ### Adding New Palettes
 
 Edit `src/palettes.ts` to add your own color combinations:
