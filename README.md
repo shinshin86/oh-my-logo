@@ -115,6 +115,7 @@ console.log('Sunset colors:', PALETTES.sunset);
 | `-d, --direction <dir>` | Gradient direction (`vertical`, `horizontal`, `diagonal`) | `vertical` |
 | `--filled` | Use filled block characters instead of outlined ASCII | `false` |
 | `-l, --list-palettes` | Show all available color palettes | - |
+| `--gallery` | Render text in all available palettes | - |
 | `--color` | Force color output (useful for pipes) | - |
 | `--no-color` | Disable color output | - |
 | `-v, --version` | Show version number | - |
@@ -203,6 +204,22 @@ npx oh-my-logo "DEPLOY SUCCESS" forest --color
 
 # Plain text output
 npx oh-my-logo "LOG ENTRY" --no-color
+```
+
+### Gallery Mode
+
+```bash
+# Display text in all available palettes
+npx oh-my-logo "PREVIEW" --gallery
+
+# Gallery with filled characters
+npx oh-my-logo "COLORS" --gallery --filled
+
+# Compare multi-line text across all palettes
+npx oh-my-logo "MY\nLOGO" --gallery
+
+# Gallery with custom font
+npx oh-my-logo "STYLES" --gallery -f Big
 ```
 
 ## 🎭 Use Cases
@@ -294,6 +311,38 @@ npm run build
 # Test the built version
 node dist/index.js "HELLO" matrix --filled
 ```
+
+### 🧪 Testing
+
+Run the test suite with Vitest:
+
+```bash
+# Run all tests in watch mode
+npm run test
+
+# Run tests once (CI mode)
+npm run test:coverage
+
+# Run tests with UI
+npm run test:ui
+
+# Run specific test file
+npm test -- src/__tests__/cli.test.ts
+```
+
+The test suite includes:
+- Unit tests for all library functions
+- CLI integration tests
+- Color palette validation
+- Error handling scenarios
+- TTY/color detection logic
+
+Tests are located in `src/__tests__/` with the following structure:
+- `cli.test.ts` - CLI command line behavior
+- `lib.test.ts` - Library API functions
+- `palettes.test.ts` - Color palette system
+- `renderer.test.ts` - ASCII art rendering
+- `utils/` - Utility function tests
 
 ### Adding New Palettes
 

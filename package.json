@@ -1,6 +1,6 @@
 {
   "name": "oh-my-logo",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Display giant ASCII art logos with colorful gradients in your terminal",
   "type": "module",
   "main": "./dist/lib.js",
