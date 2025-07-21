@@ -18,7 +18,7 @@ program
   .name('oh-my-logo')
   .description('Display giant ASCII art logos with colorful gradients in your terminal')
   .version(packageJson.version)
-  .argument('<text>', 'Text to display (use "\\n" for newlines or "-" for stdin)')
+  .argument('[text]', 'Text to display (use "\\n" for newlines or "-" for stdin)')
   .argument('[palette]', 'Color palette to use', DEFAULT_PALETTE)
   .option('-f, --font <name>', 'Figlet font name', process.env.OHMYLOGO_FONT || DEFAULT_FONT)
   .option('-l, --list-palettes', 'List available palettes')
@@ -26,7 +26,7 @@ program
   .option('--no-color', 'Disable color output')
   .option('-d, --direction <dir>', 'Gradient direction: horizontal, vertical, or diagonal', 'vertical')
   .option('--filled', 'Use filled characters instead of outlined ASCII art')
-  .action(async (text: string, paletteArg: string, options) => {
+  .action(async (text: string | undefined, paletteArg: string, options) => {
     try {
       if (options.listPalettes) {
         console.log('Available palettes:');
@@ -37,6 +37,10 @@ program
         process.exit(0);
       }
 
+      if (!text) {
+        throw new InputError('Text is required when not using --list-palettes');
+      }
+      
       let inputText = text;
       
       if (text === '-') {
