@@ -115,6 +115,7 @@ console.log('Sunset colors:', PALETTES.sunset);
 | `-d, --direction <dir>` | Gradient direction (`vertical`, `horizontal`, `diagonal`) | `vertical` |
 | `--filled` | Use filled block characters instead of outlined ASCII | `false` |
 | `-l, --list-palettes` | Show all available color palettes | - |
+| `--gallery` | Render text in all available palettes | - |
 | `--color` | Force color output (useful for pipes) | - |
 | `--no-color` | Disable color output | - |
 | `-v, --version` | Show version number | - |
@@ -203,6 +204,22 @@ npx oh-my-logo "DEPLOY SUCCESS" forest --color
 
 # Plain text output
 npx oh-my-logo "LOG ENTRY" --no-color
+```
+
+### Gallery Mode
+
+```bash
+# Display text in all available palettes
+npx oh-my-logo "PREVIEW" --gallery
+
+# Gallery with filled characters
+npx oh-my-logo "COLORS" --gallery --filled
+
+# Compare multi-line text across all palettes
+npx oh-my-logo "MY\nLOGO" --gallery
+
+# Gallery with custom font
+npx oh-my-logo "STYLES" --gallery -f Big
 ```
 
 ## 🎭 Use Cases
