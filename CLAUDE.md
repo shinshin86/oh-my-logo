@@ -134,7 +134,7 @@ The project uses **Vitest** for comprehensive testing:
 
 ### Test Structure
 ```
-src/__tests__/
+__tests__/
 ├── lib.test.ts           # Library API functions
 ├── palettes.test.ts      # Color palette system
 ├── renderer.test.ts      # ASCII art rendering (with mocks)

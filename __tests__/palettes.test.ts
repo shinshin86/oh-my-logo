@@ -6,7 +6,7 @@ import {
   getDefaultPalette,
   getPalettePreview,
   type PaletteName
-} from '../palettes.js';
+} from '../src/palettes.js';
 
 describe('palettes', () => {
   describe('PALETTES', () => {
