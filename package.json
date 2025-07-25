@@ -37,7 +37,7 @@
     "figlet"
   ],
   "author": "shinshin86 <shinshin86npm@gmail.com> (https://github.com/shinshin86)",
-  "license": "MIT",
+  "license": "MIT AND CC0-1.0",
   "engines": {
     "node": ">=18"
   },
