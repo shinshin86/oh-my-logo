@@ -5,7 +5,7 @@ import { dirname, join } from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const cliPath = join(__dirname, '..', '..', 'src', 'index.ts');
+const cliPath = join(__dirname, '..', 'src', 'index.ts');
 
 describe('CLI', () => {
   let originalExit: typeof process.exit;

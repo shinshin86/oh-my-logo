@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { renderLogo } from '../renderer.js';
+import { renderLogo } from '../src/renderer.js';
 
 // Mock figlet
 vi.mock('figlet', () => ({

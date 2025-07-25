@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { shouldUseColor, stripAnsiCodes } from '../../utils/stdout.js';
+import { shouldUseColor, stripAnsiCodes } from '../../src/utils/stdout.js';
 
 // Mock process.stdout and process.env
 const mockProcess = {

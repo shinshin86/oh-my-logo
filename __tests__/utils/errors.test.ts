@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { PaletteError, InputError, FontError } from '../../utils/errors.js';
+import { PaletteError, InputError, FontError } from '../../src/utils/errors.js';
 
 describe('utils/errors', () => {
   describe('PaletteError', () => {

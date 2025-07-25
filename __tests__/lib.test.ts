@@ -8,19 +8,19 @@ import {
   DEFAULT_DIRECTION,
   type RenderOptions,
   type RenderInkOptions
-} from '../lib.js';
+} from '../src/lib.js';
 
 // Mock the dependencies
-vi.mock('../renderer.js', () => ({
+vi.mock('../src/renderer.js', () => ({
   renderLogo: vi.fn().mockResolvedValue('mocked ascii art')
 }));
 
-vi.mock('../InkRenderer.js', () => ({
+vi.mock('../src/InkRenderer.js', () => ({
   renderInkLogo: vi.fn().mockResolvedValue(undefined)
 }));
 
-vi.mock('../palettes.js', async () => {
-  const actual = await vi.importActual('../palettes.js');
+vi.mock('../src/palettes.js', async () => {
+  const actual = await vi.importActual('../src/palettes.js');
   return {
     ...actual,
     resolvePalette: vi.fn().mockImplementation((name: string) => {
@@ -35,8 +35,8 @@ vi.mock('../palettes.js', async () => {
   };
 });
 
-import { renderLogo } from '../renderer.js';
-import { renderInkLogo } from '../InkRenderer.js';
+import { renderLogo } from '../src/renderer.js';
+import { renderInkLogo } from '../src/InkRenderer.js';
 
 describe('lib', () => {
   describe('constants', () => {
