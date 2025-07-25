@@ -10,6 +10,8 @@ You can also create stunning animations like these by using it as a library in y
 
 ![GIF Demo 2](./images/demo2.gif)
 
+The logos produced by `oh-my-logo` are CC0 (public domain); feel free to use them anywhere.
+
 ## ✨ Features
 
 - 🎨 **Two Rendering Modes**: Choose between outlined ASCII art or filled block characters
@@ -366,7 +368,7 @@ Contributions are welcome! Please feel free to submit a Pull Request. Whether it
 
 ## 📄 License
 
-MIT
+MIT AND CC0-1.0
 
 ---
 
