@@ -4,9 +4,9 @@ import { shouldUseColor, stripAnsiCodes } from '../../src/utils/stdout.js';
 // Mock process.stdout and process.env
 const mockProcess = {
   stdout: {
-    isTTY: true
+    isTTY: true,
   },
-  env: {} as Record<string, string | undefined>
+  env: {} as Record<string, string | undefined>,
 };
 
 vi.stubGlobal('process', mockProcess);
@@ -172,7 +172,8 @@ describe('utils/stdout', () => {
     });
 
     it('should remove background color codes', () => {
-      const input = '\u001b[41m\u001b[37mWhite text on red background\u001b[49m\u001b[39m';
+      const input =
+        '\u001b[41m\u001b[37mWhite text on red background\u001b[49m\u001b[39m';
       const result = stripAnsiCodes(input);
       expect(result).toBe('White text on red background');
     });
@@ -195,20 +196,23 @@ describe('utils/stdout', () => {
     });
 
     it('should handle multiline text with ANSI codes', () => {
-      const input = '\u001b[31mLine 1\u001b[39m\n\u001b[32mLine 2\u001b[39m\n\u001b[34mLine 3\u001b[39m';
+      const input =
+        '\u001b[31mLine 1\u001b[39m\n\u001b[32mLine 2\u001b[39m\n\u001b[34mLine 3\u001b[39m';
       const result = stripAnsiCodes(input);
       expect(result).toBe('Line 1\nLine 2\nLine 3');
     });
 
     it('should handle complex gradient-string output', () => {
       // Simulate typical gradient-string output with multiple escape sequences
-      const input = '\u001b[38;2;255;153;102mH\u001b[38;2;255;94;98me\u001b[38;2;255;163;78ml\u001b[38;2;255;94;98ml\u001b[38;2;255;153;102mo';
+      const input =
+        '\u001b[38;2;255;153;102mH\u001b[38;2;255;94;98me\u001b[38;2;255;163;78ml\u001b[38;2;255;94;98ml\u001b[38;2;255;153;102mo';
       const result = stripAnsiCodes(input);
       expect(result).toBe('Hello');
     });
 
     it('should handle mixed content', () => {
-      const input = 'Normal text \u001b[31mRed\u001b[39m more normal \u001b[32mGreen\u001b[39m text';
+      const input =
+        'Normal text \u001b[31mRed\u001b[39m more normal \u001b[32mGreen\u001b[39m text';
       const result = stripAnsiCodes(input);
       expect(result).toBe('Normal text Red more normal Green text');
     });
@@ -228,7 +232,8 @@ describe('utils/stdout', () => {
       });
 
       it('should handle consecutive ANSI codes', () => {
-        const input = '\u001b[31m\u001b[1m\u001b[4mText\u001b[24m\u001b[22m\u001b[39m';
+        const input =
+          '\u001b[31m\u001b[1m\u001b[4mText\u001b[24m\u001b[22m\u001b[39m';
         const result = stripAnsiCodes(input);
         expect(result).toBe('Text');
       });
@@ -244,13 +249,13 @@ describe('utils/stdout', () => {
   describe('integration scenarios', () => {
     it('should work together - color detection and stripping', () => {
       const coloredText = '\u001b[31mRed text\u001b[39m';
-      
+
       // When color should be used, return original
       mockProcess.stdout.isTTY = true;
       const useColor = shouldUseColor({});
       const result1 = useColor ? coloredText : stripAnsiCodes(coloredText);
       expect(result1).toBe(coloredText);
-      
+
       // When color should not be used, strip codes
       mockProcess.stdout.isTTY = false;
       const noColor = shouldUseColor({});
@@ -260,13 +265,17 @@ describe('utils/stdout', () => {
 
     it('should handle force color with stripping', () => {
       const coloredText = '\u001b[32mGreen text\u001b[39m';
-      
+
       // Force color should keep ANSI codes
-      const result1 = shouldUseColor({ forceColor: true }) ? coloredText : stripAnsiCodes(coloredText);
+      const result1 = shouldUseColor({ forceColor: true })
+        ? coloredText
+        : stripAnsiCodes(coloredText);
       expect(result1).toBe(coloredText);
-      
+
       // No color should strip ANSI codes
-      const result2 = shouldUseColor({ noColor: true }) ? coloredText : stripAnsiCodes(coloredText);
+      const result2 = shouldUseColor({ noColor: true })
+        ? coloredText
+        : stripAnsiCodes(coloredText);
       expect(result2).toBe('Green text');
     });
   });

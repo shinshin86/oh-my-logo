@@ -5,7 +5,7 @@ describe('utils/errors', () => {
   describe('PaletteError', () => {
     it('should create error with correct message and palette name', () => {
       const error = new PaletteError('invalid-palette');
-      
+
       expect(error).toBeInstanceOf(Error);
       expect(error).toBeInstanceOf(PaletteError);
       expect(error.name).toBe('PaletteError');
@@ -15,7 +15,7 @@ describe('utils/errors', () => {
 
     it('should handle empty palette name', () => {
       const error = new PaletteError('');
-      
+
       expect(error.message).toBe('Unknown palette: ');
       expect(error.palette).toBe('');
     });
@@ -23,14 +23,14 @@ describe('utils/errors', () => {
     it('should handle special characters in palette name', () => {
       const paletteName = 'my-special-palette_123!';
       const error = new PaletteError(paletteName);
-      
+
       expect(error.message).toBe(`Unknown palette: ${paletteName}`);
       expect(error.palette).toBe(paletteName);
     });
 
     it('should be catchable as generic Error', () => {
       const error = new PaletteError('test');
-      
+
       expect(() => {
         throw error;
       }).toThrow(Error);
@@ -38,7 +38,7 @@ describe('utils/errors', () => {
 
     it('should have proper error stack', () => {
       const error = new PaletteError('test');
-      
+
       expect(error.stack).toBeDefined();
       expect(error.stack).toContain('PaletteError');
     });
@@ -47,7 +47,7 @@ describe('utils/errors', () => {
   describe('InputError', () => {
     it('should create error with correct message and input', () => {
       const error = new InputError('invalid input');
-      
+
       expect(error).toBeInstanceOf(Error);
       expect(error).toBeInstanceOf(InputError);
       expect(error.name).toBe('InputError');
@@ -57,7 +57,7 @@ describe('utils/errors', () => {
 
     it('should handle empty input', () => {
       const error = new InputError('');
-      
+
       expect(error.message).toBe('Invalid input: ');
       expect(error.input).toBe('');
     });
@@ -65,14 +65,14 @@ describe('utils/errors', () => {
     it('should handle multiline input', () => {
       const input = 'line1\nline2\nline3';
       const error = new InputError(input);
-      
+
       expect(error.message).toBe(`Invalid input: ${input}`);
       expect(error.input).toBe(input);
     });
 
     it('should be catchable as generic Error', () => {
       const error = new InputError('test');
-      
+
       expect(() => {
         throw error;
       }).toThrow(Error);
@@ -80,7 +80,7 @@ describe('utils/errors', () => {
 
     it('should have proper error stack', () => {
       const error = new InputError('test input');
-      
+
       expect(error.stack).toBeDefined();
       expect(error.stack).toContain('InputError');
     });
@@ -89,7 +89,7 @@ describe('utils/errors', () => {
   describe('FontError', () => {
     it('should create error with correct message and font name', () => {
       const error = new FontError('invalid-font');
-      
+
       expect(error).toBeInstanceOf(Error);
       expect(error).toBeInstanceOf(FontError);
       expect(error.name).toBe('FontError');
@@ -99,7 +99,7 @@ describe('utils/errors', () => {
 
     it('should handle empty font name', () => {
       const error = new FontError('');
-      
+
       expect(error.message).toBe('Font not found: ');
       expect(error.font).toBe('');
     });
@@ -107,14 +107,14 @@ describe('utils/errors', () => {
     it('should handle font names with spaces', () => {
       const fontName = 'Big Money';
       const error = new FontError(fontName);
-      
+
       expect(error.message).toBe(`Font not found: ${fontName}`);
       expect(error.font).toBe(fontName);
     });
 
     it('should be catchable as generic Error', () => {
       const error = new FontError('test');
-      
+
       expect(() => {
         throw error;
       }).toThrow(Error);
@@ -122,7 +122,7 @@ describe('utils/errors', () => {
 
     it('should have proper error stack', () => {
       const error = new FontError('invalid-font');
-      
+
       expect(error.stack).toBeDefined();
       expect(error.stack).toContain('FontError');
     });
@@ -133,7 +133,7 @@ describe('utils/errors', () => {
       const paletteError = new PaletteError('test');
       const inputError = new InputError('test');
       const fontError = new FontError('test');
-      
+
       expect(paletteError).not.toBeInstanceOf(InputError);
       expect(paletteError).not.toBeInstanceOf(FontError);
       expect(inputError).not.toBeInstanceOf(PaletteError);
@@ -146,10 +146,10 @@ describe('utils/errors', () => {
       const errors = [
         new PaletteError('test'),
         new InputError('test'),
-        new FontError('test')
+        new FontError('test'),
       ];
-      
-      errors.forEach(error => {
+
+      errors.forEach((error) => {
         expect(error).toBeInstanceOf(Error);
       });
     });
@@ -167,7 +167,7 @@ describe('utils/errors', () => {
         }
         return 'unknown';
       };
-      
+
       expect(testError(new PaletteError('test'))).toBe('palette');
       expect(testError(new InputError('test'))).toBe('input');
       expect(testError(new FontError('test'))).toBe('font');

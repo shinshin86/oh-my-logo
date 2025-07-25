@@ -29,7 +29,7 @@ const Logo: React.FC<LogoProps> = ({ text, colors }) => {
 export function renderInkLogo(text: string, palette: string[]): Promise<void> {
   return new Promise((resolve) => {
     const { unmount } = render(<Logo text={text} colors={palette} />);
-    
+
     // Automatically unmount after rendering to allow process to exit
     setTimeout(() => {
       unmount();

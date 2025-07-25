@@ -5,25 +5,35 @@ import {
   getPaletteNames,
   getDefaultPalette,
   getPalettePreview,
-  type PaletteName
+  type PaletteName,
 } from '../src/palettes.js';
 
 describe('palettes', () => {
   describe('PALETTES', () => {
     it('should contain all expected palettes', () => {
       const expectedPalettes = [
-        'grad-blue', 'sunset', 'dawn', 'nebula', 'mono',
-        'ocean', 'fire', 'forest', 'gold', 'purple',
-        'mint', 'coral', 'matrix'
+        'grad-blue',
+        'sunset',
+        'dawn',
+        'nebula',
+        'mono',
+        'ocean',
+        'fire',
+        'forest',
+        'gold',
+        'purple',
+        'mint',
+        'coral',
+        'matrix',
       ];
-      
+
       expect(Object.keys(PALETTES)).toEqual(expectedPalettes);
     });
 
     it('should have valid hex colors for each palette', () => {
       Object.entries(PALETTES).forEach(([name, colors]) => {
         expect(colors.length).toBeGreaterThan(0);
-        colors.forEach(color => {
+        colors.forEach((color) => {
           expect(color).toMatch(/^#[0-9a-fA-F]{6}$/);
         });
       });
@@ -65,9 +75,19 @@ describe('palettes', () => {
     it('should return palette names in correct order', () => {
       const names = getPaletteNames();
       const expectedOrder = [
-        'grad-blue', 'sunset', 'dawn', 'nebula', 'mono',
-        'ocean', 'fire', 'forest', 'gold', 'purple',
-        'mint', 'coral', 'matrix'
+        'grad-blue',
+        'sunset',
+        'dawn',
+        'nebula',
+        'mono',
+        'ocean',
+        'fire',
+        'forest',
+        'gold',
+        'purple',
+        'mint',
+        'coral',
+        'matrix',
       ];
       expect(names).toEqual(expectedOrder);
     });

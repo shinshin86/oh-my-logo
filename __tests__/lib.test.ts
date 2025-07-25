@@ -7,16 +7,16 @@ import {
   DEFAULT_FONT,
   DEFAULT_DIRECTION,
   type RenderOptions,
-  type RenderInkOptions
+  type RenderInkOptions,
 } from '../src/lib.js';
 
 // Mock the dependencies
 vi.mock('../src/renderer.js', () => ({
-  renderLogo: vi.fn().mockResolvedValue('mocked ascii art')
+  renderLogo: vi.fn().mockResolvedValue('mocked ascii art'),
 }));
 
 vi.mock('../src/InkRenderer.js', () => ({
-  renderInkLogo: vi.fn().mockResolvedValue(undefined)
+  renderInkLogo: vi.fn().mockResolvedValue(undefined),
 }));
 
 vi.mock('../src/palettes.js', async () => {
@@ -26,12 +26,12 @@ vi.mock('../src/palettes.js', async () => {
     resolvePalette: vi.fn().mockImplementation((name: string) => {
       const palettes: Record<string, string[] | null> = {
         'grad-blue': ['#4ea8ff', '#7f88ff'],
-        'sunset': ['#ff9966', '#ff5e62', '#ffa34e'],
-        'invalid': null
+        sunset: ['#ff9966', '#ff5e62', '#ffa34e'],
+        invalid: null,
       };
       return palettes[name] || null;
     }),
-    getDefaultPalette: vi.fn().mockReturnValue(['#4ea8ff', '#7f88ff'])
+    getDefaultPalette: vi.fn().mockReturnValue(['#4ea8ff', '#7f88ff']),
   };
 });
 
@@ -65,7 +65,9 @@ describe('lib', () => {
     });
 
     it('should throw error for invalid palette names', () => {
-      expect(() => resolveColors('invalid-palette')).toThrow('Unknown palette: invalid-palette');
+      expect(() => resolveColors('invalid-palette')).toThrow(
+        'Unknown palette: invalid-palette'
+      );
     });
 
     it('should handle empty string palette name', () => {
@@ -76,7 +78,7 @@ describe('lib', () => {
   describe('render', () => {
     it('should call renderLogo with default options', async () => {
       await render('TEST');
-      
+
       expect(renderLogo).toHaveBeenCalledWith(
         'TEST',
         ['#4ea8ff', '#7f88ff'],
@@ -89,11 +91,11 @@ describe('lib', () => {
       const options: RenderOptions = {
         palette: 'sunset',
         font: 'Big',
-        direction: 'horizontal'
+        direction: 'horizontal',
       };
-      
+
       await render('CUSTOM', options);
-      
+
       expect(renderLogo).toHaveBeenCalledWith(
         'CUSTOM',
         ['#ff9966', '#ff5e62', '#ffa34e'],
@@ -106,11 +108,11 @@ describe('lib', () => {
       const customColors = ['#ff0000', '#00ff00'];
       const options: RenderOptions = {
         palette: customColors,
-        direction: 'diagonal'
+        direction: 'diagonal',
       };
-      
+
       await render('COLORS', options);
-      
+
       expect(renderLogo).toHaveBeenCalledWith(
         'COLORS',
         customColors,
@@ -126,7 +128,7 @@ describe('lib', () => {
 
     it('should handle partial options', async () => {
       await render('PARTIAL', { palette: 'sunset' });
-      
+
       expect(renderLogo).toHaveBeenCalledWith(
         'PARTIAL',
         ['#ff9966', '#ff5e62', '#ffa34e'],
@@ -139,38 +141,36 @@ describe('lib', () => {
   describe('renderFilled', () => {
     it('should call renderInkLogo with default palette', async () => {
       await renderFilled('TEST');
-      
-      expect(renderInkLogo).toHaveBeenCalledWith(
-        'TEST',
-        ['#4ea8ff', '#7f88ff']
-      );
+
+      expect(renderInkLogo).toHaveBeenCalledWith('TEST', [
+        '#4ea8ff',
+        '#7f88ff',
+      ]);
     });
 
     it('should call renderInkLogo with custom palette', async () => {
       const options: RenderInkOptions = {
-        palette: 'sunset'
+        palette: 'sunset',
       };
-      
+
       await renderFilled('FILLED', options);
-      
-      expect(renderInkLogo).toHaveBeenCalledWith(
-        'FILLED',
-        ['#ff9966', '#ff5e62', '#ffa34e']
-      );
+
+      expect(renderInkLogo).toHaveBeenCalledWith('FILLED', [
+        '#ff9966',
+        '#ff5e62',
+        '#ffa34e',
+      ]);
     });
 
     it('should handle custom color arrays', async () => {
       const customColors = ['#ff0000', '#00ff00', '#0000ff'];
       const options: RenderInkOptions = {
-        palette: customColors
+        palette: customColors,
       };
-      
+
       await renderFilled('COLORS', options);
-      
-      expect(renderInkLogo).toHaveBeenCalledWith(
-        'COLORS',
-        customColors
-      );
+
+      expect(renderInkLogo).toHaveBeenCalledWith('COLORS', customColors);
     });
 
     it('should return void (Promise<void>)', async () => {
@@ -182,13 +182,13 @@ describe('lib', () => {
   describe('error handling', () => {
     it('should handle errors from renderLogo', async () => {
       vi.mocked(renderLogo).mockRejectedValueOnce(new Error('Figlet error'));
-      
+
       await expect(render('TEST')).rejects.toThrow('Figlet error');
     });
 
     it('should handle errors from renderInkLogo', async () => {
       vi.mocked(renderInkLogo).mockRejectedValueOnce(new Error('Ink error'));
-      
+
       await expect(renderFilled('TEST')).rejects.toThrow('Ink error');
     });
   });

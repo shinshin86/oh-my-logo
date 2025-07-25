@@ -1,11 +1,11 @@
-import { renderFilled, PALETTES, type PaletteName } from "../dist/lib.js";
+import { renderFilled, PALETTES, type PaletteName } from '../dist/lib.js';
 
-const text   = Deno.args[0] ?? "OH\nMY\nLOGO";
-const fonts  = ["Standard", "Big", "Slant", "3D"];
-const pals   = Object.keys(PALETTES) as PaletteName[];
-let   colorFrame = 0;
-let   fontFrame  = 0;
-let   textFrame  = 0;
+const text = Deno.args[0] ?? 'OH\nMY\nLOGO';
+const fonts = ['Standard', 'Big', 'Slant', '3D'];
+const pals = Object.keys(PALETTES) as PaletteName[];
+let colorFrame = 0;
+let fontFrame = 0;
+let textFrame = 0;
 
 // Split text character by character (considering line breaks)
 function getDisplayText(fullText: string, charIndex: number): string {
@@ -18,23 +18,28 @@ const totalChars = text.length;
 // ────────────────────────────────────────
 async function draw(): Promise<void> {
   const palette = pals[colorFrame % pals.length];
-  const font    = fonts[fontFrame % fonts.length];
-  
+  const font = fonts[fontFrame % fonts.length];
+
   // Calculate display character count (add 1 character every 5 frames)
   const displayCharCount = Math.floor(textFrame / 5) % (totalChars + 3);
-  const displayText = displayCharCount >= totalChars 
-    ? text  // Display full text after all characters are shown
-    : getDisplayText(text, displayCharCount);
+  const displayText =
+    displayCharCount >= totalChars
+      ? text // Display full text after all characters are shown
+      : getDisplayText(text, displayCharCount);
 
   // Show at least 1 character if empty
-  const finalText = displayText || text[0] || "OH\nMY\nLOGO";
+  const finalText = displayText || text[0] || 'OH\nMY\nLOGO';
 
   try {
-    const art = await renderFilled(finalText, { palette, font, direction: "horizontal" });
+    const art = await renderFilled(finalText, {
+      palette,
+      font,
+      direction: 'horizontal',
+    });
     console.clear();
     console.log(art);
   } catch (error) {
-    console.error("Rendering error:", error);
+    console.error('Rendering error:', error);
     clearInterval(intervalId);
     process.exit(1);
   }
