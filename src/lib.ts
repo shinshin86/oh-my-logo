@@ -1,12 +1,12 @@
 import { renderLogo } from './renderer.js';
 import { renderInkLogo } from './InkRenderer.js';
-import { 
-  PALETTES, 
-  type PaletteName, 
-  resolvePalette, 
-  getPaletteNames, 
+import {
+  PALETTES,
+  type PaletteName,
+  resolvePalette,
+  getPaletteNames,
   getDefaultPalette,
-  getPalettePreview 
+  getPalettePreview,
 } from './palettes.js';
 import type { Fonts } from 'figlet';
 
@@ -24,31 +24,39 @@ export interface RenderInkOptions {
   palette?: PaletteName | string[] | string;
 }
 
-export function resolveColors(palette: PaletteName | string[] | string): string[] {
+export function resolveColors(
+  palette: PaletteName | string[] | string
+): string[] {
   if (Array.isArray(palette)) {
     return palette;
   }
-  
+
   const colors = resolvePalette(palette);
   if (!colors) {
     throw new Error(`Unknown palette: ${palette}`);
   }
-  
+
   return colors;
 }
 
-export async function render(text: string, options: RenderOptions = {}): Promise<string> {
+export async function render(
+  text: string,
+  options: RenderOptions = {}
+): Promise<string> {
   const {
     palette = DEFAULT_PALETTE,
     font = DEFAULT_FONT,
-    direction = DEFAULT_DIRECTION
+    direction = DEFAULT_DIRECTION,
   } = options;
 
   const paletteColors = resolveColors(palette);
   return renderLogo(text, paletteColors, font, direction);
 }
 
-export async function renderFilled(text: string, options: RenderInkOptions = {}): Promise<void> {
+export async function renderFilled(
+  text: string,
+  options: RenderInkOptions = {}
+): Promise<void> {
   const { palette = DEFAULT_PALETTE } = options;
   const paletteColors = resolveColors(palette);
   return renderInkLogo(text, paletteColors);
@@ -60,7 +68,7 @@ export {
   resolvePalette,
   getPaletteNames,
   getDefaultPalette,
-  getPalettePreview
+  getPalettePreview,
 };
 
 export type { Fonts };
