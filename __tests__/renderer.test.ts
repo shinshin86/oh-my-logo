@@ -4,13 +4,13 @@ import { renderLogo } from '../src/renderer.js';
 // Mock figlet
 vi.mock('figlet', () => ({
   default: {
-    textSync: vi.fn()
-  }
+    textSync: vi.fn(),
+  },
 }));
 
 // Mock gradient-string
 vi.mock('gradient-string', () => ({
-  default: vi.fn()
+  default: vi.fn(),
 }));
 
 import figlet from 'figlet';
@@ -22,7 +22,8 @@ describe('renderer', () => {
   });
 
   describe('renderLogo', () => {
-    const mockAsciiArt = ' _____ _____ _____ _____ \n|_   _|  ___|  ___|_   _|\n  | | | |_  | |_    | |  \n  | | |  _| |  _|   | |  \n  |_| |_|   |_|     |_|  ';
+    const mockAsciiArt =
+      ' _____ _____ _____ _____ \n|_   _|  ___|  ___|_   _|\n  | | | |_  | |_    | |  \n  | | |  _| |  _|   | |  \n  |_| |_|   |_|     |_|  ';
     const mockPalette = ['#ff0000', '#00ff00', '#0000ff'];
 
     beforeEach(() => {
@@ -32,7 +33,7 @@ describe('renderer', () => {
     describe('vertical gradient (default)', () => {
       it('should render with vertical gradient', () => {
         const mockGradient = {
-          multiline: vi.fn().mockReturnValue('colored ascii art')
+          multiline: vi.fn().mockReturnValue('colored ascii art'),
         };
         vi.mocked(gradient).mockReturnValue(mockGradient as any);
 
@@ -43,7 +44,7 @@ describe('renderer', () => {
           horizontalLayout: 'default',
           verticalLayout: 'default',
           width: 80,
-          whitespaceBreak: true
+          whitespaceBreak: true,
         });
         expect(gradient).toHaveBeenCalledWith(mockPalette);
         expect(mockGradient.multiline).toHaveBeenCalledWith(mockAsciiArt);
@@ -52,7 +53,7 @@ describe('renderer', () => {
 
       it('should use custom font', () => {
         const mockGradient = {
-          multiline: vi.fn().mockReturnValue('colored ascii art')
+          multiline: vi.fn().mockReturnValue('colored ascii art'),
         };
         vi.mocked(gradient).mockReturnValue(mockGradient as any);
 
@@ -63,7 +64,7 @@ describe('renderer', () => {
           horizontalLayout: 'default',
           verticalLayout: 'default',
           width: 80,
-          whitespaceBreak: true
+          whitespaceBreak: true,
         });
       });
     });
@@ -73,33 +74,43 @@ describe('renderer', () => {
         const mockGradientFn = vi.fn().mockReturnValue('colored line');
         vi.mocked(gradient).mockReturnValue(mockGradientFn as any);
 
-        const result = renderLogo('TEST', mockPalette, 'Standard', 'horizontal');
+        const result = renderLogo(
+          'TEST',
+          mockPalette,
+          'Standard',
+          'horizontal'
+        );
 
         expect(gradient).toHaveBeenCalledWith(mockPalette);
-        
+
         // Should call gradient function for each non-empty line
         const lines = mockAsciiArt.split('\n');
-        const nonEmptyLines = lines.filter(line => line.trim() !== '');
+        const nonEmptyLines = lines.filter((line) => line.trim() !== '');
         expect(mockGradientFn).toHaveBeenCalledTimes(nonEmptyLines.length);
-        
+
         expect(result).toContain('colored line');
       });
 
       it('should preserve empty lines', () => {
         const artWithEmptyLines = 'LINE1\n\nLINE3\n\nLINE5';
         vi.mocked(figlet.textSync).mockReturnValue(artWithEmptyLines);
-        
+
         const mockGradientFn = vi.fn().mockReturnValue('colored');
         vi.mocked(gradient).mockReturnValue(mockGradientFn as any);
 
-        const result = renderLogo('TEST', mockPalette, 'Standard', 'horizontal');
+        const result = renderLogo(
+          'TEST',
+          mockPalette,
+          'Standard',
+          'horizontal'
+        );
 
         // Should only call gradient for non-empty lines (3 times)
         expect(mockGradientFn).toHaveBeenCalledTimes(3);
         expect(mockGradientFn).toHaveBeenCalledWith('LINE1');
         expect(mockGradientFn).toHaveBeenCalledWith('LINE3');
         expect(mockGradientFn).toHaveBeenCalledWith('LINE5');
-        
+
         // Result should maintain line structure
         const resultLines = result.split('\n');
         expect(resultLines).toHaveLength(5);
@@ -117,19 +128,19 @@ describe('renderer', () => {
 
         // Should create a new gradient for each line with shifted palette
         const lines = mockAsciiArt.split('\n');
-        const nonEmptyLines = lines.filter(line => line.trim() !== '');
-        
+        const nonEmptyLines = lines.filter((line) => line.trim() !== '');
+
         // First call creates the main gradient function, then one call per non-empty line
         expect(gradient).toHaveBeenCalledTimes(1 + nonEmptyLines.length);
         expect(mockGradientFn).toHaveBeenCalledTimes(nonEmptyLines.length);
-        
+
         expect(result).toContain('colored line');
       });
 
       it('should shift palette colors based on line position', () => {
         const artWithMultipleLines = 'LINE1\nLINE2\nLINE3\nLINE4';
         vi.mocked(figlet.textSync).mockReturnValue(artWithMultipleLines);
-        
+
         const mockGradientFn = vi.fn().mockReturnValue('colored');
         vi.mocked(gradient).mockReturnValue(mockGradientFn as any);
 
@@ -137,13 +148,13 @@ describe('renderer', () => {
 
         // Should call gradient with different palette shifts for each line
         expect(gradient).toHaveBeenCalledTimes(5); // 1 initial + 4 lines
-        
+
         // Each call should have a shifted version of the palette
         const gradientCalls = vi.mocked(gradient).mock.calls;
         expect(gradientCalls).toHaveLength(5);
-        
+
         // Verify each call has an array of 3 colors (same length as original palette)
-        gradientCalls.forEach(call => {
+        gradientCalls.forEach((call) => {
           expect(call[0]).toHaveLength(3);
           expect(Array.isArray(call[0])).toBe(true);
         });
@@ -172,7 +183,7 @@ describe('renderer', () => {
       it('should handle empty text input', () => {
         vi.mocked(figlet.textSync).mockReturnValue('');
         const mockGradient = {
-          multiline: vi.fn().mockReturnValue('')
+          multiline: vi.fn().mockReturnValue(''),
         };
         vi.mocked(gradient).mockReturnValue(mockGradient as any);
 
@@ -187,7 +198,7 @@ describe('renderer', () => {
       it('should handle single character input', () => {
         vi.mocked(figlet.textSync).mockReturnValue('A');
         const mockGradient = {
-          multiline: vi.fn().mockReturnValue('A')
+          multiline: vi.fn().mockReturnValue('A'),
         };
         vi.mocked(gradient).mockReturnValue(mockGradient as any);
 
@@ -200,20 +211,23 @@ describe('renderer', () => {
         const longText = 'A'.repeat(100);
         vi.mocked(figlet.textSync).mockReturnValue('long ascii art');
         const mockGradient = {
-          multiline: vi.fn().mockReturnValue('colored long ascii art')
+          multiline: vi.fn().mockReturnValue('colored long ascii art'),
         };
         vi.mocked(gradient).mockReturnValue(mockGradient as any);
 
         const result = renderLogo(longText, mockPalette);
 
-        expect(figlet.textSync).toHaveBeenCalledWith(longText, expect.any(Object));
+        expect(figlet.textSync).toHaveBeenCalledWith(
+          longText,
+          expect.any(Object)
+        );
         expect(result).toBe('colored long ascii art');
       });
 
       it('should handle single color palette', () => {
         const singleColorPalette = ['#ff0000'];
         const mockGradient = {
-          multiline: vi.fn().mockReturnValue('single color art')
+          multiline: vi.fn().mockReturnValue('single color art'),
         };
         vi.mocked(gradient).mockReturnValue(mockGradient as any);
 

@@ -28,7 +28,9 @@ describe('CLI', () => {
   describe('--list-palettes', () => {
     it('should list palettes without requiring text argument', () => {
       try {
-        const output = execSync(`npx tsx ${cliPath} --list-palettes`, { encoding: 'utf-8' });
+        const output = execSync(`npx tsx ${cliPath} --list-palettes`, {
+          encoding: 'utf-8',
+        });
         expect(output).toContain('Available palettes:');
         expect(output).toContain('sunset');
         expect(output).toContain('ocean');
@@ -60,13 +62,17 @@ describe('CLI', () => {
         expect(true).toBe(false);
       } catch (error: any) {
         // Should fail with appropriate error
-        expect(error.stderr || error.message).toMatch(/text is required|missing required argument/i);
+        expect(error.stderr || error.message).toMatch(
+          /text is required|missing required argument/i
+        );
       }
     });
 
     it('should accept text argument for normal operation', () => {
       try {
-        const output = execSync(`npx tsx ${cliPath} "TEST" --no-color`, { encoding: 'utf-8' });
+        const output = execSync(`npx tsx ${cliPath} "TEST" --no-color`, {
+          encoding: 'utf-8',
+        });
         // The output should contain ASCII art (not the literal word TEST)
         expect(output.length).toBeGreaterThan(0);
         expect(output).toMatch(/[_|\/\\]/); // ASCII art characters
