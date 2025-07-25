@@ -25,6 +25,8 @@
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage",
+    "fmt": "biome format . --write",
+    "fmt:check": "biome format .",
     "clean": "rm -rf dist",
     "prepublishOnly": "npm run clean && npm run build"
   },
@@ -55,6 +57,7 @@
     "react": "^18.3.1"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.1.2",
     "@types/figlet": "^1.5.8",
     "@types/gradient-string": "^1.1.5",
     "@types/node": "^20.19.1",
