@@ -435,8 +435,9 @@ interface RenderOptions {
   direction?: 'vertical' | 'horizontal' | 'diagonal';
 }
 
-type BlockFont = 'block' | 'chrome' | 'shade' | 'simpleBlock' | '3d' | 
-                 'simple3d' | 'slick' | 'tiny' | 'grid' | 'pallet' | 'huge';
+type BlockFont = '3d' | 'block' | 'chrome' | 'console' | 'grid' | 
+                 'huge' | 'pallet' | 'shade' | 'simple' | 'simple3d' | 
+                 'simpleBlock' | 'slick' | 'tiny';
 
 interface RenderInkOptions {
   palette?: PaletteName | string[];
