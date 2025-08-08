@@ -20,8 +20,9 @@ export interface RenderOptions {
   direction?: 'vertical' | 'horizontal' | 'diagonal';
 }
 
-# cfonts upstream fonts / dir: https://github.com/dominikwilkowski/cfonts/tree/released/fonts
-export type BlockFont = '3d' | 'block' | 'chrome' | 'console' | 'grid' | 'huge' | 'pallet' | 'shade' | 'simple' | 'simple3d' | 'simpleBlock' | 'slick' | 'tiny';
+// cfonts upstream fonts / dir: https://github.com/dominikwilkowski/cfonts/tree/released/fonts
+// cfont 'console' is excluded due to `Type '"console"' is not assignable to type` error/blocker
+export type BlockFont = '3d' | 'block' | 'chrome' | 'grid' | 'huge' | 'pallet' | 'shade' | 'simple' | 'simple3d' | 'simpleBlock' | 'slick' | 'tiny';
 
 export interface RenderInkOptions {
   palette?: PaletteName | string[] | string;

@@ -163,7 +163,7 @@ console.log('Sunset colors:', PALETTES.sunset);
 | `-f, --font <name>` | Figlet font name | `Standard` |
 | `-d, --direction <dir>` | Gradient direction (`vertical`, `horizontal`, `diagonal`) | `vertical` |
 | `--filled` | Use filled block characters instead of outlined ASCII | `false` |
-| `--block-font <font>` | Font for filled mode (`block`, `chrome`, `shade`, `simpleBlock`, `3d`) | `block` |
+| `--block-font <font>` | Font for filled mode (`3d`, `block`, `chrome`, `grid`, `huge`, `pallet`, `shade`, `simple`, `simple3d`, `simpleBlock`, `slick`, `tiny`)
 | `--letter-spacing <n>` | Letter spacing for filled mode (integer spaces between characters, 0+) | `1` |
 | `--reverse-gradient` | Reverse gradient colors | `false` |
 | `-l, --list-palettes` | Show all available color palettes | - |

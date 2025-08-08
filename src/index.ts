@@ -51,7 +51,7 @@ program
     'vertical'
   )
   .option('--filled', 'Use filled characters instead of outlined ASCII art')
-  .option('--block-font <font>', 'Font for filled mode (block, chrome, shade, simpleBlock, 3d)', 'block')
+  .option('--block-font <font>', 'Font for filled mode (3d, block, chrome, grid, huge, pallet, shade, simple, simple3d, simpleBlock, slick, tiny)', 'block')
   .option('--letter-spacing <number>', 'Letter spacing for filled mode', parseInt)
   .option('--reverse-gradient', 'Reverse gradient colors')
   .action(async (text: string | undefined, paletteArg: string, options) => {
