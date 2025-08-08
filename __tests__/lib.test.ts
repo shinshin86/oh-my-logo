@@ -145,7 +145,7 @@ describe('lib', () => {
       expect(renderInkLogo).toHaveBeenCalledWith('TEST', [
         '#4ea8ff',
         '#7f88ff',
-      ]);
+      ], { font: undefined, letterSpacing: undefined });
     });
 
     it('should call renderInkLogo with custom palette', async () => {
@@ -159,7 +159,52 @@ describe('lib', () => {
         '#ff9966',
         '#ff5e62',
         '#ffa34e',
-      ]);
+      ], { font: undefined, letterSpacing: undefined });
+    });
+
+    it('should pass font option to renderInkLogo', async () => {
+      const options: RenderInkOptions = {
+        palette: 'sunset',
+        font: 'chrome',
+      };
+
+      await renderFilled('FONT', options);
+
+      expect(renderInkLogo).toHaveBeenCalledWith('FONT', [
+        '#ff9966',
+        '#ff5e62',
+        '#ffa34e',
+      ], { font: 'chrome', letterSpacing: undefined });
+    });
+
+    it('should pass letterSpacing option to renderInkLogo', async () => {
+      const options: RenderInkOptions = {
+        palette: 'grad-blue',
+        letterSpacing: 3,
+      };
+
+      await renderFilled('SPACED', options);
+
+      expect(renderInkLogo).toHaveBeenCalledWith('SPACED', [
+        '#4ea8ff',
+        '#7f88ff',
+      ], { font: undefined, letterSpacing: 3 });
+    });
+
+    it('should pass both font and letterSpacing options', async () => {
+      const options: RenderInkOptions = {
+        palette: 'sunset',
+        font: 'shade',
+        letterSpacing: 2,
+      };
+
+      await renderFilled('COMBO', options);
+
+      expect(renderInkLogo).toHaveBeenCalledWith('COMBO', [
+        '#ff9966',
+        '#ff5e62',
+        '#ffa34e',
+      ], { font: 'shade', letterSpacing: 2 });
     });
 
     it('should handle custom color arrays', async () => {
@@ -170,7 +215,7 @@ describe('lib', () => {
 
       await renderFilled('COLORS', options);
 
-      expect(renderInkLogo).toHaveBeenCalledWith('COLORS', customColors);
+      expect(renderInkLogo).toHaveBeenCalledWith('COLORS', customColors, { font: undefined, letterSpacing: undefined });
     });
 
     it('should return void (Promise<void>)', async () => {
@@ -184,6 +229,15 @@ describe('lib', () => {
       vi.mocked(renderLogo).mockRejectedValueOnce(new Error('Figlet error'));
 
       await expect(render('TEST')).rejects.toThrow('Figlet error');
+    });
+
+    it('should reject negative letter spacing in renderFilled', async () => {
+      const options: RenderInkOptions = {
+        palette: 'sunset',
+        letterSpacing: -1,
+      };
+
+      await expect(renderFilled('TEST', options)).rejects.toThrow('Letter spacing must be 0 or greater');
     });
 
     it('should handle errors from renderInkLogo', async () => {
