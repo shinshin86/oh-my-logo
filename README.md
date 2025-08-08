@@ -20,6 +20,9 @@ The logos produced by `oh-my-logo` are CC0 (public domain); feel free to use the
 - 🔤 **Multi-line Support**: Create logos with multiple lines of text
 - ⚡ **Zero Dependencies**: Run instantly with `npx` - no installation required
 - 🎛️ **Customizable**: Use different fonts and create your own color schemes
+- 🎭 **Shadow Styles**: Customize shadow effects in filled mode with different block fonts
+- 🔄 **Letter Spacing**: For `--filled` mode: character spacing for different visual densities
+- 🔄 **Reverse Gradients**: Flip color palettes for unique effects
 
 ## 🚀 Quick Start
 
@@ -33,6 +36,38 @@ Want filled characters? Add the `--filled` flag:
 
 ```bash
 npx oh-my-logo "YOUR LOGO" sunset --filled
+```
+
+### 🆕 New in v0.3.0
+
+**Customize shadow styles in filled mode:**
+```bash
+# Box-drawing shadows (default)
+npx oh-my-logo "STYLE" fire --filled --block-font block
+
+# Minimal sleek shadows
+npx oh-my-logo "STYLE" fire --filled --block-font chrome
+
+# Dotted/shaded shadows
+npx oh-my-logo "STYLE" fire --filled --block-font shade
+```
+
+**Control letter spacing for block fonts:**
+```bash
+# Wide spacing (5 spaces between letters)
+npx oh-my-logo "WIDE" ocean --filled --letter-spacing 5
+
+# Tight spacing (no spaces)
+npx oh-my-logo "TIGHT" ocean --filled --letter-spacing 0
+```
+
+**Reverse gradients for unique effects:**
+```bash
+# Reverse any color palette
+npx oh-my-logo "REVERSE" sunset --reverse-gradient
+
+# Works with filled mode too
+npx oh-my-logo "REVERSE" sunset --filled --reverse-gradient
 ```
 
 ## 📦 Installation
@@ -85,6 +120,18 @@ await renderFilled('AWESOME', {
   palette: 'fire'
 });
 
+// Filled with custom shadow style
+await renderFilled('SHADOW', {
+  palette: 'sunset',
+  font: 'shade'  // Use dotted shadow effect
+});
+
+// Filled with wide letter spacing
+await renderFilled('WIDE', {
+  palette: 'fire',
+  letterSpacing: 3
+});
+
 // TypeScript usage
 import { render, RenderOptions, PaletteName } from 'oh-my-logo';
 
@@ -116,6 +163,9 @@ console.log('Sunset colors:', PALETTES.sunset);
 | `-f, --font <name>` | Figlet font name | `Standard` |
 | `-d, --direction <dir>` | Gradient direction (`vertical`, `horizontal`, `diagonal`) | `vertical` |
 | `--filled` | Use filled block characters instead of outlined ASCII | `false` |
+| `--block-font <font>` | Font for filled mode (`3d`, `block`, `chrome`, `grid`, `huge`, `pallet`, `shade`, `simple`, `simple3d`, `simpleBlock`, `slick`, `tiny`)
+| `--letter-spacing <n>` | Letter spacing for filled mode (integer spaces between characters, 0+) | `1` |
+| `--reverse-gradient` | Reverse gradient colors | `false` |
 | `-l, --list-palettes` | Show all available color palettes | - |
 | `--gallery` | Render text in all available palettes | - |
 | `--color` | Force color output (useful for pipes) | - |
@@ -170,6 +220,99 @@ npx oh-my-logo "CODE" fire
 
 # Filled block characters
 npx oh-my-logo "CODE" fire --filled
+
+# Filled with different shadow styles
+npx oh-my-logo "CODE" fire --filled --block-font chrome   # Minimal box shadows
+npx oh-my-logo "CODE" fire --filled --block-font shade    # Dotted shadow effect
+npx oh-my-logo "CODE" fire --filled --block-font simpleBlock # Simple ASCII shadows
+```
+
+### Shadow Styles (--filled mode only)
+
+Customize the shadow characters in filled mode with `--block-font`:
+
+#### Visual Comparison of Shadow Styles
+
+**`block` (default)** - Box-drawing shadows:
+```
+ ██╗  ██╗ ██╗
+ ██║  ██║ ██║
+ ███████║ ██║
+ ██╔══██║ ██║
+ ██║  ██║ ██║
+ ╚═╝  ╚═╝ ╚═╝
+```
+
+**`chrome`** - Minimal sleek shadows:
+```
+ ╦ ╦ ╦
+ ╠═╣ ║
+ ╩ ╩ ╩
+```
+
+**`shade`** - Dotted shadow effect:
+```
+░░░░░░░░░
+░█░░█░███
+░█░░█░ █
+░████░░█
+░█  █░░█
+░█░░█░███
+░ ░░ ░
+░░░░░░░░░
+```
+
+**`simpleBlock`** - Basic ASCII shadows:
+```
+  _|    _|  _|_|_|
+  _|    _|    _|
+  _|_|_|_|    _|
+  _|    _|    _|
+  _|    _|  _|_|_|
+```
+
+```bash
+# Try different shadow styles
+npx oh-my-logo "SHADOW" sunset --filled --block-font block
+npx oh-my-logo "SHADOW" sunset --filled --block-font chrome
+npx oh-my-logo "SHADOW" sunset --filled --block-font shade
+npx oh-my-logo "SHADOW" sunset --filled --block-font simpleBlock
+```
+
+### Letter Spacing Control
+
+Adjust the spacing between characters for different visual densities:
+
+```bash
+# Default spacing (1 space)
+npx oh-my-logo "HI" --filled
+# Output:  ██╗  ██╗
+
+# Wide spacing (3 spaces)
+npx oh-my-logo "HI" --filled --letter-spacing 3
+# Output:  ██╗   ██╗
+
+# No spacing (touching)
+npx oh-my-logo "HI" --filled --letter-spacing 0  
+# Output: ██╗██╗
+
+# Note: Decimals are truncated (3.7 becomes 3)
+npx oh-my-logo "HI" --filled --letter-spacing 3.7  # Uses 3 spaces
+```
+
+### Reverse Gradient Effect
+
+Flip any color palette for unique visual effects:
+
+```bash
+# Normal sunset gradient (red → orange)
+npx oh-my-logo "GRADIENT" sunset
+
+# Reversed sunset gradient (orange → red)
+npx oh-my-logo "GRADIENT" sunset --reverse-gradient
+
+# Works with filled mode too
+npx oh-my-logo "GRADIENT" sunset --filled --reverse-gradient
 ```
 
 ### Gradient Directions
@@ -266,6 +409,8 @@ async function renderFilled(text: string, options?: RenderInkOptions): Promise<v
 
 - **text** (string): Text to display
 - **options.palette** (PaletteName | string[]): Color palette name or custom colors
+- **options.font** (BlockFont): Shadow style ('block' | 'chrome' | 'shade' | 'simpleBlock' | '3d')
+- **options.letterSpacing** (number): Integer number of spaces between characters (0 or greater, default: 1)
 
 Returns: `Promise<void>` - Renders directly to stdout
 
@@ -290,8 +435,14 @@ interface RenderOptions {
   direction?: 'vertical' | 'horizontal' | 'diagonal';
 }
 
+type BlockFont = '3d' | 'block' | 'chrome' | 'console' | 'grid' | 
+                 'huge' | 'pallet' | 'shade' | 'simple' | 'simple3d' | 
+                 'simpleBlock' | 'slick' | 'tiny';
+
 interface RenderInkOptions {
   palette?: PaletteName | string[];
+  font?: BlockFont;
+  letterSpacing?: number;
 }
 ```
 
