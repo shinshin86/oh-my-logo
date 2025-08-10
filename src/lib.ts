@@ -20,8 +20,14 @@ export interface RenderOptions {
   direction?: 'vertical' | 'horizontal' | 'diagonal';
 }
 
+// cfonts upstream fonts / dir: https://github.com/dominikwilkowski/cfonts/tree/released/fonts
+// cfont 'console' is excluded due to `Type '"console"' is not assignable to type` error/blocker
+export type BlockFont = '3d' | 'block' | 'chrome' | 'grid' | 'huge' | 'pallet' | 'shade' | 'simple' | 'simple3d' | 'simpleBlock' | 'slick' | 'tiny';
+
 export interface RenderInkOptions {
   palette?: PaletteName | string[] | string;
+  font?: BlockFont;
+  letterSpacing?: number;
 }
 
 export function resolveColors(
@@ -57,9 +63,15 @@ export async function renderFilled(
   text: string,
   options: RenderInkOptions = {}
 ): Promise<void> {
-  const { palette = DEFAULT_PALETTE } = options;
+  const { palette = DEFAULT_PALETTE, font, letterSpacing } = options;
+  
+  // Validate letter spacing
+  if (letterSpacing !== undefined && letterSpacing < 0) {
+    throw new Error('Letter spacing must be 0 or greater');
+  }
+  
   const paletteColors = resolveColors(palette);
-  return renderInkLogo(text, paletteColors);
+  return renderInkLogo(text, paletteColors, { font, letterSpacing });
 }
 
 export {
