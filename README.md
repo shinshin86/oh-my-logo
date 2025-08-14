@@ -1,5 +1,7 @@
 # oh-my-logo
 
+[![Mentioned in Awesome Gemini CLI](https://awesome.re/mentioned-badge.svg)](https://github.com/Piebald-AI/awesome-gemini-cli)
+
 ![Logo](./images/logo.png)
 
 Create stunning ASCII art logos with beautiful gradient colors in your terminal! Perfect for project banners, startup logos, or just making your terminal look awesome.
