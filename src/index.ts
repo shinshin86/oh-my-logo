@@ -51,8 +51,16 @@ program
     'vertical'
   )
   .option('--filled', 'Use filled characters instead of outlined ASCII art')
-  .option('--block-font <font>', 'Font for filled mode (3d, block, chrome, grid, huge, pallet, shade, simple, simple3d, simpleBlock, slick, tiny)', 'block')
-  .option('--letter-spacing <number>', 'Letter spacing for filled mode', parseInt)
+  .option(
+    '--block-font <font>',
+    'Font for filled mode (3d, block, chrome, grid, huge, pallet, shade, simple, simple3d, simpleBlock, slick, tiny)',
+    'block'
+  )
+  .option(
+    '--letter-spacing <number>',
+    'Letter spacing for filled mode',
+    parseInt
+  )
   .option('--reverse-gradient', 'Reverse gradient colors')
   .action(async (text: string | undefined, paletteArg: string, options) => {
     try {
@@ -88,8 +96,10 @@ program
         const paletteNames = getPaletteNames();
 
         for (const paletteName of paletteNames) {
-          console.log(`\n=== ${paletteName.toUpperCase()}${options.reverseGradient ? ' (reversed)' : ''} ===\n`);
-          
+          console.log(
+            `\n=== ${paletteName.toUpperCase()}${options.reverseGradient ? ' (reversed)' : ''} ===\n`
+          );
+
           let paletteColors = resolveColors(paletteName);
           if (options.reverseGradient) {
             paletteColors = [...paletteColors].reverse();
@@ -97,14 +107,17 @@ program
 
           if (options.filled) {
             // Validate letter spacing
-            if (options.letterSpacing !== undefined && options.letterSpacing < 0) {
+            if (
+              options.letterSpacing !== undefined &&
+              options.letterSpacing < 0
+            ) {
               throw new InputError('Letter spacing must be 0 or greater');
             }
-            
-            await renderFilled(inputText, { 
+
+            await renderFilled(inputText, {
               palette: paletteColors,
               font: options.blockFont,
-              letterSpacing: options.letterSpacing
+              letterSpacing: options.letterSpacing,
             });
           } else {
             const logo = await render(inputText, {
@@ -152,7 +165,7 @@ program
         }
         paletteColors = resolveColors(DEFAULT_PALETTE);
       }
-      
+
       // Reverse colors if requested
       if (options.reverseGradient) {
         paletteColors = [...paletteColors].reverse();
@@ -163,12 +176,12 @@ program
         if (options.letterSpacing !== undefined && options.letterSpacing < 0) {
           throw new InputError('Letter spacing must be 0 or greater');
         }
-        
+
         // Use Ink for filled characters
-        await renderFilled(inputText, { 
+        await renderFilled(inputText, {
           palette: paletteColors,
           font: options.blockFont,
-          letterSpacing: options.letterSpacing
+          letterSpacing: options.letterSpacing,
         });
       } else {
         // Use figlet for outlined ASCII art
