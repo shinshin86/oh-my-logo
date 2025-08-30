@@ -499,6 +499,26 @@ Tests are located in `src/__tests__/` with the following structure:
 - `renderer.test.ts` - ASCII art rendering
 - `utils/` - Utility function tests
 
+### Testing Terminal Stability
+
+A test script is provided to verify that the `--filled` mode properly cleans up terminal state:
+
+```bash
+# Run terminal stability stress test
+./scripts/test-filled-mode.sh
+```
+
+This script:
+- Runs 55 consecutive renders (5 iterations × 11 fonts)
+- Tests all available fonts with random color palettes
+- Verifies terminal display remains intact after extensive use
+- Helps detect any terminal corruption issues
+
+This is particularly useful for:
+- Testing after making changes to the Ink renderer
+- Verifying terminal compatibility with different environments
+- Stress testing the `--filled` mode implementation
+
 ### Adding New Palettes
 
 Edit `src/palettes.ts` to add your own color combinations:

@@ -36,6 +36,15 @@ export function renderInkLogo(text: string, palette: string[], options?: { font?
     // Automatically unmount after rendering to allow process to exit
     setTimeout(() => {
       unmount();
+      
+      // Reset terminal state to prevent corruption
+      // SGR reset (colors, styles)
+      process.stdout.write('\x1b[0m');
+      // Ensure cursor is visible
+      process.stdout.write('\x1b[?25h');
+      // Clear to end of line to remove any artifacts
+      process.stdout.write('\x1b[K');
+      
       resolve();
     }, 100);
   });
