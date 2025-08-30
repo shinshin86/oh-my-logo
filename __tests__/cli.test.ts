@@ -92,7 +92,7 @@ describe('CLI', () => {
         });
         expect(output.length).toBeGreaterThan(0);
         // Filled mode uses block characters
-        expect(output).toMatch(/[█╗╔╝╚═║]/); 
+        expect(output).toMatch(/[█╗╔╝╚═║]/);
       } catch (error: any) {
         console.error('Error with --filled:', error.message);
         throw error;
@@ -101,12 +101,15 @@ describe('CLI', () => {
 
     it('should accept --block-font option', () => {
       try {
-        const output = execSync(`npx tsx ${cliPath} "HI" --filled --block-font chrome --no-color`, {
-          encoding: 'utf-8',
-        });
+        const output = execSync(
+          `npx tsx ${cliPath} "HI" --filled --block-font chrome --no-color`,
+          {
+            encoding: 'utf-8',
+          }
+        );
         expect(output.length).toBeGreaterThan(0);
         // Chrome font uses different characters
-        expect(output).toMatch(/[╦╠╩═]/); 
+        expect(output).toMatch(/[╦╠╩═]/);
       } catch (error: any) {
         console.error('Error with --block-font:', error.message);
         throw error;
@@ -115,13 +118,16 @@ describe('CLI', () => {
 
     it('should accept --letter-spacing option', () => {
       try {
-        const output = execSync(`npx tsx ${cliPath} "AB" --filled --letter-spacing 3 --no-color`, {
-          encoding: 'utf-8',
-        });
+        const output = execSync(
+          `npx tsx ${cliPath} "AB" --filled --letter-spacing 3 --no-color`,
+          {
+            encoding: 'utf-8',
+          }
+        );
         expect(output.length).toBeGreaterThan(0);
         // With spacing=3, there should be more spaces between characters
         const lines = output.split('\n');
-        const hasWideSpacing = lines.some(line => line.includes('   '));
+        const hasWideSpacing = lines.some((line) => line.includes('   '));
         expect(hasWideSpacing).toBe(true);
       } catch (error: any) {
         console.error('Error with --letter-spacing:', error.message);
@@ -131,9 +137,12 @@ describe('CLI', () => {
 
     it('should accept letter spacing of 0', () => {
       try {
-        const output = execSync(`npx tsx ${cliPath} "AB" --filled --letter-spacing 0 --no-color`, {
-          encoding: 'utf-8',
-        });
+        const output = execSync(
+          `npx tsx ${cliPath} "AB" --filled --letter-spacing 0 --no-color`,
+          {
+            encoding: 'utf-8',
+          }
+        );
         expect(output.length).toBeGreaterThan(0);
         // With spacing=0, characters should be touching with no spaces
         // This is valid and should work
@@ -153,7 +162,9 @@ describe('CLI', () => {
         expect(true).toBe(false);
       } catch (error: any) {
         // Should fail with our custom error message
-        expect(error.stderr || error.message).toMatch(/Letter spacing must be 0 or greater/i);
+        expect(error.stderr || error.message).toMatch(
+          /Letter spacing must be 0 or greater/i
+        );
       }
     });
   });
@@ -161,9 +172,12 @@ describe('CLI', () => {
   describe('--reverse-gradient flag', () => {
     it('should accept --reverse-gradient flag', () => {
       try {
-        const output = execSync(`npx tsx ${cliPath} "TEST" --reverse-gradient --no-color`, {
-          encoding: 'utf-8',
-        });
+        const output = execSync(
+          `npx tsx ${cliPath} "TEST" --reverse-gradient --no-color`,
+          {
+            encoding: 'utf-8',
+          }
+        );
         expect(output.length).toBeGreaterThan(0);
         expect(output).toMatch(/[_|\/\\]/); // Should still produce ASCII art
       } catch (error: any) {
@@ -174,9 +188,12 @@ describe('CLI', () => {
 
     it('should work with --filled and --reverse-gradient together', () => {
       try {
-        const output = execSync(`npx tsx ${cliPath} "HI" --filled --reverse-gradient --no-color`, {
-          encoding: 'utf-8',
-        });
+        const output = execSync(
+          `npx tsx ${cliPath} "HI" --filled --reverse-gradient --no-color`,
+          {
+            encoding: 'utf-8',
+          }
+        );
         expect(output.length).toBeGreaterThan(0);
         expect(output).toMatch(/[█╗╔╝╚═║]/); // Should produce filled art
       } catch (error: any) {
