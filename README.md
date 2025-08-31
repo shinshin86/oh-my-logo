@@ -2,15 +2,15 @@
 
 [![Mentioned in Awesome Gemini CLI](https://awesome.re/mentioned-badge.svg)](https://github.com/Piebald-AI/awesome-gemini-cli)
 
-![Logo](./images/logo.png)
+![Logo](https://raw.githubusercontent.com/shinshin86/oh-my-logo/main/images/logo.png)
 
 Create stunning ASCII art logos with beautiful gradient colors in your terminal! Perfect for project banners, startup logos, or just making your terminal look awesome.
 
 You can also create stunning animations like these by using it as a library in your programs!
 
-![GIF Demo](./images/demo.gif)
+![GIF Demo](https://raw.githubusercontent.com/shinshin86/oh-my-logo/refs/heads/main/images/demo.gif)
 
-![GIF Demo 2](./images/demo2.gif)
+![GIF Demo 2](https://raw.githubusercontent.com/shinshin86/oh-my-logo/main/images/demo2.gif)
 
 The logos produced by `oh-my-logo` are CC0 (public domain); feel free to use them anywhere.
 
