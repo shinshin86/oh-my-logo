@@ -25,6 +25,91 @@ const packageJson = JSON.parse(
 
 const program = new Command();
 
+function stripWrappingQuotes(value: string): string {
+  return value.replace(/^['"]+/, '').replace(/['"]+$/, '');
+}
+
+function parseJsonPalette(value: string): string[] {
+  const candidates = [value];
+
+  if (value.includes("'")) {
+    candidates.push(value.replace(/'/g, '"'));
+  }
+
+  for (const candidate of candidates) {
+    try {
+      const parsed = JSON.parse(candidate);
+      if (!Array.isArray(parsed)) {
+        continue;
+      }
+
+      const normalized = parsed.map((color) => {
+        if (typeof color !== 'string') {
+          throw new InputError('custom palette colors must be strings');
+        }
+
+        const trimmedColor = color.trim();
+        if (!trimmedColor) {
+          throw new InputError('custom palette colors must not be empty');
+        }
+
+        return trimmedColor;
+      });
+
+      if (normalized.length === 0) {
+        throw new InputError('custom palette must include at least one color');
+      }
+
+      return normalized;
+    } catch (error) {
+      if (error instanceof InputError) {
+        throw error;
+      }
+    }
+  }
+
+  throw new InputError('custom palette JSON could not be parsed');
+}
+
+function parseCommaSeparatedPalette(value: string): string[] {
+  const colors = value
+    .split(',')
+    .map((part) => stripWrappingQuotes(part.trim()).trim())
+    .filter((part) => part.length > 0);
+
+  if (colors.length === 0) {
+    throw new InputError('custom palette must include at least one color');
+  }
+
+  return colors;
+}
+
+function parsePaletteArgument(paletteArg: string): string {
+  const trimmedArg = paletteArg.trim();
+
+  if (!trimmedArg) {
+    return DEFAULT_PALETTE;
+  }
+
+  return stripWrappingQuotes(trimmedArg).trim();
+}
+
+function parsePaletteColorsOption(colors: string): string[] {
+  if (!colors || !colors.trim()) {
+    throw new InputError('custom palette must include at least one color');
+  }
+
+  const trimmed = colors.trim();
+  const unwrapped = stripWrappingQuotes(trimmed).trim();
+
+  const looksLikeJson = unwrapped.startsWith('[') && unwrapped.endsWith(']');
+  if (looksLikeJson) {
+    return parseJsonPalette(unwrapped);
+  }
+
+  return parseCommaSeparatedPalette(unwrapped);
+}
+
 program
   .name('oh-my-logo')
   .description(
@@ -36,6 +121,10 @@ program
     'Text to display (use "\\n" for newlines or "-" for stdin)'
   )
   .argument('[palette]', 'Color palette to use', DEFAULT_PALETTE)
+  .option(
+    '--palette-colors <colors>',
+    'Custom colors as JSON array or comma-separated list'
+  )
   .option(
     '-f, --font <name>',
     'Figlet font name',
@@ -155,13 +244,21 @@ program
 
       inputText = inputText.replace(/\\n/g, '\n');
 
+      const paletteInput =
+        options.paletteColors !== undefined && options.paletteColors !== null
+          ? parsePaletteColorsOption(options.paletteColors)
+          : parsePaletteArgument(paletteArg);
+
       // Validate and resolve palette
       let paletteColors: string[];
       try {
-        paletteColors = resolveColors(paletteArg);
+        paletteColors = resolveColors(paletteInput);
       } catch {
-        if (paletteArg !== DEFAULT_PALETTE) {
-          throw new PaletteError(paletteArg);
+        if (
+          typeof paletteInput === 'string' &&
+          paletteInput !== DEFAULT_PALETTE
+        ) {
+          throw new PaletteError(paletteInput);
         }
         paletteColors = resolveColors(DEFAULT_PALETTE);
       }

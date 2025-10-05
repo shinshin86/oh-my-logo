@@ -97,6 +97,25 @@ npm install oh-my-logo
 oh-my-logo <text> [palette] [options]
 ```
 
+#### Custom Color Palettes (CLI)
+
+Provide custom gradients via `--palette-colors <colors>`.
+
+```bash
+# JSON array (double quotes recommended)
+npx oh-my-logo "MY LOGO" --palette-colors '["#00ff00","#ffa500","#ff0000"]'
+
+# Simple comma-separated notation (wrap each color in quotes)
+npx oh-my-logo "MY LOGO" --palette-colors "'#00ff00', '#ffa500', '#ff0000'"
+```
+
+- The comma-separated form is convenient for quick manual CLI usage and one-liners.
+- The JSON array form works well when you want to store the palette in shell scripts or CI variables, pass the result of `JSON.stringify` from Node.js, or keep the array in configuration files.
+- Extra whitespace is trimmed automatically.
+- Color strings can be hex codes or any CSS color supported by `gradient-string`.
+- You can combine custom palettes with other options like `--reverse-gradient` or `--filled`.
+- The positional `[palette]` argument continues to accept built-in palette names only.
+
 ### Library Usage
 
 ```javascript
@@ -168,6 +187,7 @@ console.log('Sunset colors:', PALETTES.sunset);
 | `--block-font <font>` | Font for filled mode (`3d`, `block`, `chrome`, `grid`, `huge`, `pallet`, `shade`, `simple`, `simple3d`, `simpleBlock`, `slick`, `tiny`)
 | `--letter-spacing <n>` | Letter spacing for filled mode (integer spaces between characters, 0+) | `1` |
 | `--reverse-gradient` | Reverse gradient colors | `false` |
+| `--palette-colors <colors>` | Custom colors (JSON array or comma-separated list) | - |
 | `-l, --list-palettes` | Show all available color palettes | - |
 | `--gallery` | Render text in all available palettes | - |
 | `--color` | Force color output (useful for pipes) | - |
