@@ -202,4 +202,92 @@ describe('CLI', () => {
       }
     });
   });
+
+  describe('custom palette positional argument', () => {
+    it('should reject JSON array palette input', () => {
+      try {
+        execSync(
+          `npx tsx ${cliPath} "CUSTOM" '["#00ff00","#ffa500","#ff0000"]' --no-color`,
+          {
+            encoding: 'utf-8',
+            stdio: 'pipe',
+          }
+        );
+        expect(true).toBe(false);
+      } catch (error: any) {
+        expect(error.stderr || error.message).toMatch(/Unknown palette/i);
+      }
+    });
+
+    it('should reject comma-separated palette input with quotes', () => {
+      try {
+        execSync(
+          `npx tsx ${cliPath} "CUSTOM" "'#00ff00', '#ffa500', '#ff0000'" --no-color`,
+          {
+            encoding: 'utf-8',
+            stdio: 'pipe',
+          }
+        );
+        expect(true).toBe(false);
+      } catch (error: any) {
+        expect(error.stderr || error.message).toMatch(/Unknown palette/i);
+      }
+    });
+  });
+
+  describe('--palette-colors option', () => {
+    it('should accept comma-separated colors', () => {
+      try {
+        const output = execSync(
+          `npx tsx ${cliPath} "CUSTOM" --palette-colors "'#00ff00', '#ffa500', '#ff0000'" --no-color`,
+          {
+            encoding: 'utf-8',
+          }
+        );
+        expect(output.length).toBeGreaterThan(0);
+        expect(output).toMatch(/[_|\\/]/);
+      } catch (error: any) {
+        console.error(
+          'Error with --palette-colors comma usage:',
+          error.message
+        );
+        throw error;
+      }
+    });
+
+    it('should accept JSON colors', () => {
+      try {
+        const output = execSync(
+          `npx tsx ${cliPath} "CUSTOM" --palette-colors '["#00ff00","#ffa500","#ff0000"]' --no-color`,
+          {
+            encoding: 'utf-8',
+          }
+        );
+        expect(output.length).toBeGreaterThan(0);
+        expect(output).toMatch(/[_|\\/]/);
+      } catch (error: any) {
+        console.error('Error with --palette-colors JSON usage:', error.message);
+        throw error;
+      }
+    });
+
+    it('should override palette argument when provided', () => {
+      try {
+        const output = execSync(
+          `npx tsx ${cliPath} "CUSTOM" sunset --palette-colors "'#00ff00', '#ffa500', '#ff0000'" --no-color`,
+          {
+            encoding: 'utf-8',
+          }
+        );
+        expect(output.length).toBeGreaterThan(0);
+        expect(output).toMatch(/[_|\\/]/);
+      } catch (error: any) {
+        console.error(
+          'Error when overriding with --palette-colors:',
+          error.message
+        );
+        throw error;
+      }
+    });
+  });
 });
