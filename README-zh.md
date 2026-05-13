@@ -1,5 +1,8 @@
 # oh-my-logo
 
+English | [简体中文](./README-zh.md)
+
+
 [![Mentioned in Awesome Gemini CLI](https://awesome.re/mentioned-badge.svg)](https://github.com/Piebald-AI/awesome-gemini-cli)
 
 ![Logo](https://raw.githubusercontent.com/shinshin86/oh-my-logo/main/images/logo.png)
@@ -498,3 +501,74 @@ npm run test
 # 运行一次测试（CI 模式）
 npm run test:coverage
 ```
+
+# 运行带 UI 的测试
+npm run test:ui
+
+# 运行特定测试文件
+npm test -- src/__tests__/cli.test.ts
+```
+
+测试套件包括：
+- 所有库函数的单元测试
+- CLI 集成测试
+- 调色板验证
+- 错误处理场景
+- TTY/颜色检测逻辑
+
+测试位于 `src/__tests__/` 目录，结构如下：
+- `cli.test.ts` - CLI 命令行行为
+- `lib.test.ts` - 库 API 函数
+- `palettes.test.ts` - 调色板系统
+- `renderer.test.ts` - ASCII 艺术渲染
+- `utils/` - 工具函数测试
+
+### 测试终端稳定性
+
+提供了一个测试脚本，用于验证 `--filled` 模式是否正确清理终端状态：
+
+```bash
+# 运行终端稳定性压力测试
+./scripts/test-filled-mode.sh
+```
+
+此脚本：
+- 运行 55 次连续渲染（5 次迭代 × 11 种字体）
+- 使用随机调色板测试所有可用字体
+- 验证大量使用后终端显示是否保持正常
+- 帮助检测任何终端损坏问题
+
+这对于以下情况特别有用：
+- 修改 Ink 渲染器后进行测试
+- 验证不同环境下的终端兼容性
+- 对 `--filled` 模式实现进行压力测试
+
+### 添加新调色板
+
+编辑 `src/palettes.ts` 添加你自己的颜色组合：
+
+```typescript
+export const PALETTES = {
+  // ... 现有调色板
+  'my-palette': ['#ff0000', '#00ff00', '#0000ff'],
+} as const;
+```
+
+## 🤝 贡献
+
+欢迎贡献！请随时提交 Pull Request。无论是：
+
+- 🎨 新调色板
+- 🔧 Bug 修复
+- ✨ 新功能
+- 📖 文档改进
+
+## 📄 许可证
+
+MIT AND CC0-1.0
+
+---
+
+**为终端爱好者用心制作 ❤️**
+
+*将你的无聊文本变成令人惊叹的视觉 Logo！*
