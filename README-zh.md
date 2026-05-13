@@ -1,7 +1,6 @@
 # oh-my-logo
 
-English | [简体中文](./README-zh.md)
-
+[English](./README.md) | 简体中文
 
 [![Mentioned in Awesome Gemini CLI](https://awesome.re/mentioned-badge.svg)](https://github.com/Piebald-AI/awesome-gemini-cli)
 
@@ -500,7 +499,6 @@ npm run test
 
 # 运行一次测试（CI 模式）
 npm run test:coverage
-```
 
 # 运行带 UI 的测试
 npm run test:ui

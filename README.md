@@ -1,5 +1,7 @@
 # oh-my-logo
 
+English | [简体中文](./README-zh.md)
+
 [![Mentioned in Awesome Gemini CLI](https://awesome.re/mentioned-badge.svg)](https://github.com/Piebald-AI/awesome-gemini-cli)
 
 ![Logo](https://raw.githubusercontent.com/shinshin86/oh-my-logo/main/images/logo.png)
