@@ -145,7 +145,7 @@ describe('lib', () => {
       expect(renderInkLogo).toHaveBeenCalledWith(
         'TEST',
         ['#4ea8ff', '#7f88ff'],
-        { font: undefined, letterSpacing: undefined }
+        { font: undefined, letterSpacing: undefined, direction: 'vertical' }
       );
     });
 
@@ -159,7 +159,7 @@ describe('lib', () => {
       expect(renderInkLogo).toHaveBeenCalledWith(
         'FILLED',
         ['#ff9966', '#ff5e62', '#ffa34e'],
-        { font: undefined, letterSpacing: undefined }
+        { font: undefined, letterSpacing: undefined, direction: 'vertical' }
       );
     });
 
@@ -174,7 +174,7 @@ describe('lib', () => {
       expect(renderInkLogo).toHaveBeenCalledWith(
         'FONT',
         ['#ff9966', '#ff5e62', '#ffa34e'],
-        { font: 'chrome', letterSpacing: undefined }
+        { font: 'chrome', letterSpacing: undefined, direction: 'vertical' }
       );
     });
 
@@ -189,7 +189,7 @@ describe('lib', () => {
       expect(renderInkLogo).toHaveBeenCalledWith(
         'SPACED',
         ['#4ea8ff', '#7f88ff'],
-        { font: undefined, letterSpacing: 3 }
+        { font: undefined, letterSpacing: 3, direction: 'vertical' }
       );
     });
 
@@ -205,7 +205,7 @@ describe('lib', () => {
       expect(renderInkLogo).toHaveBeenCalledWith(
         'COMBO',
         ['#ff9966', '#ff5e62', '#ffa34e'],
-        { font: 'shade', letterSpacing: 2 }
+        { font: 'shade', letterSpacing: 2, direction: 'vertical' }
       );
     });
 
@@ -220,7 +220,23 @@ describe('lib', () => {
       expect(renderInkLogo).toHaveBeenCalledWith('COLORS', customColors, {
         font: undefined,
         letterSpacing: undefined,
+        direction: 'vertical',
       });
+    });
+
+    it('should pass direction option to renderInkLogo', async () => {
+      const options: RenderInkOptions = {
+        palette: 'sunset',
+        direction: 'diagonal',
+      };
+
+      await renderFilled('DIRECTION', options);
+
+      expect(renderInkLogo).toHaveBeenCalledWith(
+        'DIRECTION',
+        ['#ff9966', '#ff5e62', '#ffa34e'],
+        { font: undefined, letterSpacing: undefined, direction: 'diagonal' }
+      );
     });
 
     it('should return void (Promise<void>)', async () => {

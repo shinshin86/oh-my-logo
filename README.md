@@ -149,6 +149,12 @@ await renderFilled('SHADOW', {
   font: 'shade'  // Use dotted shadow effect
 });
 
+// Filled with top-to-bottom gradient direction
+await renderFilled('STACKED', {
+  palette: ['#ffd400', '#ffb000', '#c87a2a'],
+  direction: 'vertical'
+});
+
 // Filled with wide letter spacing
 await renderFilled('WIDE', {
   palette: 'fire',
@@ -435,6 +441,7 @@ async function renderFilled(text: string, options?: RenderInkOptions): Promise<v
 - **options.palette** (PaletteName | string[]): Color palette name or custom colors
 - **options.font** (BlockFont): Shadow style ('block' | 'chrome' | 'shade' | 'simpleBlock' | '3d')
 - **options.letterSpacing** (number): Integer number of spaces between characters (0 or greater, default: 1)
+- **options.direction** ('vertical' | 'horizontal' | 'diagonal'): Gradient direction (default: 'vertical')
 
 Returns: `Promise<void>` - Renders directly to stdout
 
@@ -467,6 +474,7 @@ interface RenderInkOptions {
   palette?: PaletteName | string[];
   font?: BlockFont;
   letterSpacing?: number;
+  direction?: 'vertical' | 'horizontal' | 'diagonal';
 }
 ```
 

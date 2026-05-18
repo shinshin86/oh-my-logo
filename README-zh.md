@@ -149,6 +149,12 @@ await renderFilled('SHADOW', {
   font: 'shade'  // 使用点状阴影效果
 });
 
+// 使用从上到下渐变方向的填充模式
+await renderFilled('STACKED', {
+  palette: ['#ffd400', '#ffb000', '#c87a2a'],
+  direction: 'vertical'
+});
+
 // 使用宽字间距的填充模式
 await renderFilled('WIDE', {
   palette: 'fire',
@@ -435,6 +441,7 @@ async function renderFilled(text: string, options?: RenderInkOptions): Promise<v
 - **options.palette**（PaletteName | string[]）：调色板名称或自定义颜色
 - **options.font**（BlockFont）：阴影样式（'block' | 'chrome' | 'shade' | 'simpleBlock' | '3d'）
 - **options.letterSpacing**（number）：字符间的整数空格数（0 或更大，默认：1）
+- **options.direction**（'vertical' | 'horizontal' | 'diagonal'）：渐变方向（默认：'vertical'）
 
 返回：`Promise<void>` - 直接渲染到标准输出
 
@@ -467,6 +474,7 @@ interface RenderInkOptions {
   palette?: PaletteName | string[];
   font?: BlockFont;
   letterSpacing?: number;
+  direction?: 'vertical' | 'horizontal' | 'diagonal';
 }
 ```
 

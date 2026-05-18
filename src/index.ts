@@ -207,6 +207,7 @@ program
               palette: paletteColors,
               font: options.blockFont,
               letterSpacing: options.letterSpacing,
+              direction: options.direction,
             });
           } else {
             const logo = await render(inputText, {
@@ -279,6 +280,7 @@ program
           palette: paletteColors,
           font: options.blockFont,
           letterSpacing: options.letterSpacing,
+          direction: options.direction,
         });
       } else {
         // Use figlet for outlined ASCII art
