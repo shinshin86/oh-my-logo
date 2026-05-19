@@ -13,6 +13,7 @@ describe('Terminal cleanup after filled mode', () => {
   const writtenData: string[] = [];
 
   beforeEach(() => {
+    vi.stubEnv('OHMYLOGO_RENDER_TIMEOUT_MS', '0');
     writtenData.length = 0;
     originalWrite = process.stdout.write;
     stdoutWriteSpy = vi
@@ -28,6 +29,7 @@ describe('Terminal cleanup after filled mode', () => {
   afterEach(() => {
     stdoutWriteSpy.mockRestore();
     process.stdout.write = originalWrite;
+    vi.unstubAllEnvs();
   });
 
   it('should output ANSI reset sequences after rendering', async () => {

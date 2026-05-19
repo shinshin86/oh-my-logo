@@ -411,6 +411,7 @@ npx oh-my-logo "STYLES" --gallery -f Big
 | Variable | Description | Example |
 |----------|-------------|---------|
 | `OHMYLOGO_FONT` | Default figlet font | `export OHMYLOGO_FONT="Big"` |
+| `OHMYLOGO_RENDER_TIMEOUT_MS` | Filled-mode render wait before cleanup (default: `250`) | `export OHMYLOGO_RENDER_TIMEOUT_MS=500` |
 
 ## 📚 Library API
 
