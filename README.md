@@ -190,7 +190,7 @@ console.log('Sunset colors:', PALETTES.sunset);
 | Option | Description | Default |
 |--------|-------------|---------|
 | `-f, --font <name>` | Figlet font name | `Standard` |
-| `-d, --direction <dir>` | Gradient direction (`vertical`, `horizontal`, `diagonal`) | `vertical` |
+| `-d, --direction <dir>` | Gradient direction (`vertical`, `horizontal`, `diagonal`) | `vertical` for ASCII, `horizontal` for filled |
 | `--filled` | Use filled block characters instead of outlined ASCII | `false` |
 | `--block-font <font>` | Font for filled mode (`3d`, `block`, `chrome`, `grid`, `huge`, `pallet`, `shade`, `simple`, `simple3d`, `simpleBlock`, `slick`, `tiny`)
 | `--letter-spacing <n>` | Letter spacing for filled mode (integer spaces between characters, 0+) | `1` |
@@ -441,7 +441,7 @@ async function renderFilled(text: string, options?: RenderInkOptions): Promise<v
 - **options.palette** (PaletteName | string[]): Color palette name or custom colors
 - **options.font** (BlockFont): Shadow style ('block' | 'chrome' | 'shade' | 'simpleBlock' | '3d')
 - **options.letterSpacing** (number): Integer number of spaces between characters (0 or greater, default: 1)
-- **options.direction** ('vertical' | 'horizontal' | 'diagonal'): Gradient direction (default: 'vertical')
+- **options.direction** ('vertical' | 'horizontal' | 'diagonal'): Gradient direction (default: 'horizontal')
 
 Returns: `Promise<void>` - Renders directly to stdout
 

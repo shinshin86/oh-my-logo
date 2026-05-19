@@ -95,7 +95,7 @@ function renderBigText(
 export function applyDirectionalGradient(
   text: string,
   colors: string[],
-  direction: GradientDirection = 'vertical'
+  direction: GradientDirection = 'horizontal'
 ): string {
   const cleanText = stripAnsi(text);
 
@@ -159,7 +159,7 @@ const Logo: React.FC<LogoProps> = ({
   colors,
   font = 'block',
   letterSpacing,
-  direction = 'vertical',
+  direction = 'horizontal',
 }) => {
   const output = renderBigText(text, font, letterSpacing);
 

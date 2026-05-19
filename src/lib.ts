@@ -13,6 +13,7 @@ import type { Fonts } from 'figlet';
 export const DEFAULT_PALETTE: PaletteName = 'grad-blue';
 export const DEFAULT_FONT = 'Standard';
 export const DEFAULT_DIRECTION = 'vertical';
+export const DEFAULT_FILLED_DIRECTION = 'horizontal';
 
 export interface RenderOptions {
   palette?: PaletteName | string[] | string;
@@ -80,7 +81,7 @@ export async function renderFilled(
     palette = DEFAULT_PALETTE,
     font,
     letterSpacing,
-    direction = DEFAULT_DIRECTION,
+    direction = DEFAULT_FILLED_DIRECTION,
   } = options;
 
   // Validate letter spacing
