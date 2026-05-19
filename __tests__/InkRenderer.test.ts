@@ -10,6 +10,7 @@ describe('InkRenderer gradient directions', () => {
   afterEach(() => {
     vi.resetModules();
     vi.doUnmock('gradient-string');
+    vi.unstubAllEnvs();
   });
 
   async function loadRenderer() {
@@ -90,5 +91,35 @@ describe('InkRenderer gradient directions', () => {
 
     expect(stripAnsi(output)).toBe(input);
     expect(output).toContain('\x1B[');
+  });
+
+  it('uses the default render timeout when no environment override is set', async () => {
+    const { DEFAULT_RENDER_TIMEOUT_MS, getRenderTimeoutMs } =
+      await loadRenderer();
+
+    expect(getRenderTimeoutMs()).toBe(DEFAULT_RENDER_TIMEOUT_MS);
+  });
+
+  it('uses OHMYLOGO_RENDER_TIMEOUT_MS when it is a valid value', async () => {
+    vi.stubEnv('OHMYLOGO_RENDER_TIMEOUT_MS', '500');
+    const { getRenderTimeoutMs } = await loadRenderer();
+
+    expect(getRenderTimeoutMs()).toBe(500);
+  });
+
+  it('falls back to the default render timeout for invalid values', async () => {
+    vi.stubEnv('OHMYLOGO_RENDER_TIMEOUT_MS', 'not-a-number');
+    const { DEFAULT_RENDER_TIMEOUT_MS, getRenderTimeoutMs } =
+      await loadRenderer();
+
+    expect(getRenderTimeoutMs()).toBe(DEFAULT_RENDER_TIMEOUT_MS);
+  });
+
+  it('falls back to the default render timeout for negative values', async () => {
+    vi.stubEnv('OHMYLOGO_RENDER_TIMEOUT_MS', '-1');
+    const { DEFAULT_RENDER_TIMEOUT_MS, getRenderTimeoutMs } =
+      await loadRenderer();
+
+    expect(getRenderTimeoutMs()).toBe(DEFAULT_RENDER_TIMEOUT_MS);
   });
 });

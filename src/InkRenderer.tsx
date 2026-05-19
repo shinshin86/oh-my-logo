@@ -16,6 +16,8 @@ interface LogoProps {
 }
 
 const ansiRegex = /\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])/g;
+export const DEFAULT_RENDER_TIMEOUT_MS = 250;
+const RENDER_TIMEOUT_ENV = 'OHMYLOGO_RENDER_TIMEOUT_MS';
 
 function stripAnsi(text: string): string {
   return text.replace(ansiRegex, '');
@@ -23,6 +25,22 @@ function stripAnsi(text: string): string {
 
 function createGradient(colors: string[]) {
   return colors.length > 0 ? gradient(colors) : gradient.rainbow;
+}
+
+export function getRenderTimeoutMs(): number {
+  const value = process.env[RENDER_TIMEOUT_ENV];
+
+  if (value === undefined || value.trim() === '') {
+    return DEFAULT_RENDER_TIMEOUT_MS;
+  }
+
+  const parsedValue = Number(value);
+
+  if (!Number.isFinite(parsedValue) || parsedValue < 0) {
+    return DEFAULT_RENDER_TIMEOUT_MS;
+  }
+
+  return Math.trunc(parsedValue);
 }
 
 function getGradientStyles(colors: string[], count: number) {
@@ -186,6 +204,8 @@ export function renderInkLogo(
       />
     );
 
+    const renderTimeoutMs = getRenderTimeoutMs();
+
     // Automatically unmount after rendering to allow process to exit
     setTimeout(() => {
       unmount();
@@ -199,6 +219,6 @@ export function renderInkLogo(
       process.stdout.write('\x1b[K');
 
       resolve();
-    }, 100);
+    }, renderTimeoutMs);
   });
 }

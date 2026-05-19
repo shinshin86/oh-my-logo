@@ -411,6 +411,7 @@ npx oh-my-logo "STYLES" --gallery -f Big
 | 变量 | 说明 | 示例 |
 |------|------|------|
 | `OHMYLOGO_FONT` | 默认 Figlet 字体 | `export OHMYLOGO_FONT="Big"` |
+| `OHMYLOGO_RENDER_TIMEOUT_MS` | 填充模式清理前的渲染等待时间（默认：`250`） | `export OHMYLOGO_RENDER_TIMEOUT_MS=500` |
 
 ## 📚 库 API
 
