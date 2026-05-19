@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, Text } from 'ink';
-import type { CFontProps } from 'ink-big-text';
+import type { BlockFont } from './lib.js';
 import gradient from 'gradient-string';
 import CFonts from 'cfonts';
 
@@ -10,7 +10,7 @@ const renderCFont = CFonts.render;
 interface LogoProps {
   text: string;
   colors: string[];
-  font?: CFontProps['font'];
+  font?: BlockFont;
   letterSpacing?: number;
   direction?: GradientDirection;
 }
@@ -67,7 +67,7 @@ function applyStyle(
 
 function renderBigText(
   text: string,
-  font: CFontProps['font'],
+  font: BlockFont,
   letterSpacing: number | undefined
 ): string {
   const output = renderCFont(text, {
@@ -170,7 +170,7 @@ export function renderInkLogo(
   text: string,
   palette: string[],
   options?: {
-    font?: CFontProps['font'];
+    font?: BlockFont;
     letterSpacing?: number;
     direction?: GradientDirection;
   }

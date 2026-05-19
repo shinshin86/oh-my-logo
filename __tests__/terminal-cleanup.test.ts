@@ -7,14 +7,6 @@ vi.mock('ink', () => ({
   })),
 }));
 
-vi.mock('ink-big-text', () => ({
-  default: vi.fn(() => null),
-}));
-
-vi.mock('ink-gradient', () => ({
-  default: vi.fn(({ children }: any) => children),
-}));
-
 describe('Terminal cleanup after filled mode', () => {
   let stdoutWriteSpy: any;
   let originalWrite: any;
