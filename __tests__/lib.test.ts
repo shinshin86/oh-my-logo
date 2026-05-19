@@ -6,6 +6,7 @@ import {
   DEFAULT_PALETTE,
   DEFAULT_FONT,
   DEFAULT_DIRECTION,
+  DEFAULT_FILLED_DIRECTION,
   type RenderOptions,
   type RenderInkOptions,
 } from '../src/lib.js';
@@ -44,6 +45,7 @@ describe('lib', () => {
       expect(DEFAULT_PALETTE).toBe('grad-blue');
       expect(DEFAULT_FONT).toBe('Standard');
       expect(DEFAULT_DIRECTION).toBe('vertical');
+      expect(DEFAULT_FILLED_DIRECTION).toBe('horizontal');
     });
   });
 
@@ -145,7 +147,11 @@ describe('lib', () => {
       expect(renderInkLogo).toHaveBeenCalledWith(
         'TEST',
         ['#4ea8ff', '#7f88ff'],
-        { font: undefined, letterSpacing: undefined }
+        {
+          font: undefined,
+          letterSpacing: undefined,
+          direction: DEFAULT_FILLED_DIRECTION,
+        }
       );
     });
 
@@ -159,7 +165,11 @@ describe('lib', () => {
       expect(renderInkLogo).toHaveBeenCalledWith(
         'FILLED',
         ['#ff9966', '#ff5e62', '#ffa34e'],
-        { font: undefined, letterSpacing: undefined }
+        {
+          font: undefined,
+          letterSpacing: undefined,
+          direction: DEFAULT_FILLED_DIRECTION,
+        }
       );
     });
 
@@ -174,7 +184,11 @@ describe('lib', () => {
       expect(renderInkLogo).toHaveBeenCalledWith(
         'FONT',
         ['#ff9966', '#ff5e62', '#ffa34e'],
-        { font: 'chrome', letterSpacing: undefined }
+        {
+          font: 'chrome',
+          letterSpacing: undefined,
+          direction: DEFAULT_FILLED_DIRECTION,
+        }
       );
     });
 
@@ -189,7 +203,11 @@ describe('lib', () => {
       expect(renderInkLogo).toHaveBeenCalledWith(
         'SPACED',
         ['#4ea8ff', '#7f88ff'],
-        { font: undefined, letterSpacing: 3 }
+        {
+          font: undefined,
+          letterSpacing: 3,
+          direction: DEFAULT_FILLED_DIRECTION,
+        }
       );
     });
 
@@ -205,7 +223,11 @@ describe('lib', () => {
       expect(renderInkLogo).toHaveBeenCalledWith(
         'COMBO',
         ['#ff9966', '#ff5e62', '#ffa34e'],
-        { font: 'shade', letterSpacing: 2 }
+        {
+          font: 'shade',
+          letterSpacing: 2,
+          direction: DEFAULT_FILLED_DIRECTION,
+        }
       );
     });
 
@@ -220,7 +242,23 @@ describe('lib', () => {
       expect(renderInkLogo).toHaveBeenCalledWith('COLORS', customColors, {
         font: undefined,
         letterSpacing: undefined,
+        direction: DEFAULT_FILLED_DIRECTION,
       });
+    });
+
+    it('should pass direction option to renderInkLogo', async () => {
+      const options: RenderInkOptions = {
+        palette: 'sunset',
+        direction: 'diagonal',
+      };
+
+      await renderFilled('DIRECTION', options);
+
+      expect(renderInkLogo).toHaveBeenCalledWith(
+        'DIRECTION',
+        ['#ff9966', '#ff5e62', '#ffa34e'],
+        { font: undefined, letterSpacing: undefined, direction: 'diagonal' }
+      );
     });
 
     it('should return void (Promise<void>)', async () => {

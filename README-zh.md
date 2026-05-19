@@ -149,6 +149,12 @@ await renderFilled('SHADOW', {
   font: 'shade'  // 使用点状阴影效果
 });
 
+// 使用从上到下渐变方向的填充模式
+await renderFilled('STACKED', {
+  palette: ['#ffd400', '#ffb000', '#c87a2a'],
+  direction: 'vertical'
+});
+
 // 使用宽字间距的填充模式
 await renderFilled('WIDE', {
   palette: 'fire',
@@ -184,7 +190,7 @@ console.log('日落颜色:', PALETTES.sunset);
 | 选项 | 说明 | 默认值 |
 |------|------|--------|
 | `-f, --font <name>` | Figlet 字体名称 | `Standard` |
-| `-d, --direction <dir>` | 渐变方向（`vertical`、`horizontal`、`diagonal`） | `vertical` |
+| `-d, --direction <dir>` | 渐变方向（`vertical`、`horizontal`、`diagonal`） | ASCII 为 `vertical`，填充模式为 `horizontal` |
 | `--filled` | 使用填充块字符代替轮廓 ASCII | `false` |
 | `--block-font <font>` | 填充模式字体（`3d`、`block`、`chrome`、`grid`、`huge`、`pallet`、`shade`、`simple`、`simple3d`、`simpleBlock`、`slick`、`tiny`） | - |
 | `--letter-spacing <n>` | 填充模式字间距（整数空格，0+） | `1` |
@@ -435,6 +441,7 @@ async function renderFilled(text: string, options?: RenderInkOptions): Promise<v
 - **options.palette**（PaletteName | string[]）：调色板名称或自定义颜色
 - **options.font**（BlockFont）：阴影样式（'block' | 'chrome' | 'shade' | 'simpleBlock' | '3d'）
 - **options.letterSpacing**（number）：字符间的整数空格数（0 或更大，默认：1）
+- **options.direction**（'vertical' | 'horizontal' | 'diagonal'）：渐变方向（默认：'horizontal'）
 
 返回：`Promise<void>` - 直接渲染到标准输出
 
@@ -467,6 +474,7 @@ interface RenderInkOptions {
   palette?: PaletteName | string[];
   font?: BlockFont;
   letterSpacing?: number;
+  direction?: 'vertical' | 'horizontal' | 'diagonal';
 }
 ```
 

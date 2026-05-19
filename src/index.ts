@@ -136,8 +136,7 @@ program
   .option('--no-color', 'Disable color output')
   .option(
     '-d, --direction <dir>',
-    'Gradient direction: horizontal, vertical, or diagonal',
-    'vertical'
+    'Gradient direction: horizontal, vertical, or diagonal'
   )
   .option('--filled', 'Use filled characters instead of outlined ASCII art')
   .option(
@@ -207,6 +206,7 @@ program
               palette: paletteColors,
               font: options.blockFont,
               letterSpacing: options.letterSpacing,
+              direction: options.direction,
             });
           } else {
             const logo = await render(inputText, {
@@ -279,6 +279,7 @@ program
           palette: paletteColors,
           font: options.blockFont,
           letterSpacing: options.letterSpacing,
+          direction: options.direction,
         });
       } else {
         // Use figlet for outlined ASCII art

@@ -13,6 +13,7 @@ import type { Fonts } from 'figlet';
 export const DEFAULT_PALETTE: PaletteName = 'grad-blue';
 export const DEFAULT_FONT = 'Standard';
 export const DEFAULT_DIRECTION = 'vertical';
+export const DEFAULT_FILLED_DIRECTION = 'horizontal';
 
 export interface RenderOptions {
   palette?: PaletteName | string[] | string;
@@ -40,6 +41,7 @@ export interface RenderInkOptions {
   palette?: PaletteName | string[] | string;
   font?: BlockFont;
   letterSpacing?: number;
+  direction?: 'vertical' | 'horizontal' | 'diagonal';
 }
 
 export function resolveColors(
@@ -75,7 +77,12 @@ export async function renderFilled(
   text: string,
   options: RenderInkOptions = {}
 ): Promise<void> {
-  const { palette = DEFAULT_PALETTE, font, letterSpacing } = options;
+  const {
+    palette = DEFAULT_PALETTE,
+    font,
+    letterSpacing,
+    direction = DEFAULT_FILLED_DIRECTION,
+  } = options;
 
   // Validate letter spacing
   if (letterSpacing !== undefined && letterSpacing < 0) {
@@ -83,7 +90,7 @@ export async function renderFilled(
   }
 
   const paletteColors = resolveColors(palette);
-  return renderInkLogo(text, paletteColors, { font, letterSpacing });
+  return renderInkLogo(text, paletteColors, { font, letterSpacing, direction });
 }
 
 export {
